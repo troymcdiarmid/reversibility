@@ -402,6 +402,7 @@ cd ../..
 
 ```
 
+##Analysis for L4 recovery
 
 ```{r}
 ##The following code creates a dataframe with all morphology and baseline locomotion measures throughout the tracking session.
@@ -466,6 +467,238 @@ geom_line(size = 0.3) +
   theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
   theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
 ggsave("unc-3_rev_Speed_trace.jpeg", width = 3.5, height = 2.5, path = "/Users/troymcdiarmid/Desktop/")
+
+
+ggplot(mean_cleanrawsmorph_whole_session, aes(time, curve, colour = genotype)) + 
+geom_line(size = 0.3) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+    scale_y_continuous(expand = c(0,0),
+                     limits = c(24, 40), breaks = c(24,28,32,36,40)) +
+  scale_x_continuous(expand = c(0,0),
+                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
+  theme_classic() +
+  labs(y = "Curvature (radians)", x = "Time (s)") +
+  theme(legend.position = "none") +
+  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
+  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
+  theme(axis.ticks.length=unit(.03, "in")) +
+  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
+ggsave("unc-3_rev_curve_trace.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Desktop/")
+
+ggplot(mean_cleanrawsmorph_whole_session, aes(time, kink, colour = genotype)) + 
+geom_line(size = 0.3) +
+   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+    scale_y_continuous(expand = c(0,0),
+                     limits = c(30, 90), breaks = c(30,40,50,60,70,80,90)) +
+  scale_x_continuous(expand = c(0,0),
+                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
+  theme_classic() +
+  labs(y = "Kink (radians)", x = "Time (S)") +
+  theme(legend.position = "none") +
+  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
+  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
+  theme(axis.ticks.length=unit(.03, "in")) +
+  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
+ggsave("unc-3_rev_kink_trace.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Desktop/")
+
+ggplot(mean_cleanrawsmorph_whole_session, aes(time, midline, colour = genotype)) + 
+geom_line(size = 0.3) +
+   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+    scale_y_continuous(expand = c(0,0),
+                     limits = c(0.9, 1.2), breaks = c(0.9,1.0,1.1,1.2)) +
+  scale_x_continuous(expand = c(0,0),
+                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
+  theme_classic() +
+  labs(y = "Midline length (mm)", x = "Time (s)") +
+  theme(legend.position = "none") +
+  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
+  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
+  theme(axis.ticks.length=unit(.03, "in")) +
+  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
+ggsave("unc-3_rev_midline_trace.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Desktop/")
+
+ggplot(mean_cleanrawsmorph_whole_session, aes(time, pathlen, colour = genotype)) + 
+geom_line(size = 0.5) +
+   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+    scale_y_continuous(expand = c(0,0),
+                     limits = c(0, 25), breaks = c(0,5,10,15,20,25)) +
+  scale_x_continuous(expand = c(0,0),
+                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
+  theme_classic() +
+  labs(y = "Pathlength (mm)", x = "Time (s)") +
+  theme(legend.position = "none") +
+  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
+  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
+  theme(axis.ticks.length=unit(.03, "in")) +
+  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
+ggsave("unc-3_rev_pathlength_trace.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Desktop/")
+
+
+
+ggplot(mean_cleanrawsmorph_whole_session, aes(time, width, colour = genotype)) + 
+geom_line(size = 0.4)
+
+ggplot(mean_cleanrawsmorph_whole_session, aes(time, curve, colour = genotype)) + 
+geom_line(size = 0.4)
+
+ggplot(mean_cleanrawsmorph_whole_session, aes(time, kink, colour = genotype)) + 
+geom_line(size = 0.4)
+
+ggplot(mean_cleanrawsmorph_whole_session, aes(time, length, colour = genotype)) + 
+geom_line(size = 0.4)
+
+ggplot(mean_cleanrawsmorph_whole_session, aes(time, midline, colour = genotype)) + 
+geom_line(size = 0.4)
+
+ggplot(mean_cleanrawsmorph_whole_session, aes(time, bias, colour = genotype)) + 
+geom_line(size = 0.4)
+
+ggplot(mean_cleanrawsmorph_whole_session, aes(time, dir, colour = genotype)) + 
+geom_line(size = 0.4)
+
+ggplot(mean_cleanrawsmorph_whole_session, aes(time, angular, colour = genotype)) + 
+geom_line(size = 0.4)
+
+ggplot(mean_cleanrawsmorph_whole_session, aes(time, aspect, colour = genotype)) + 
+geom_line(size = 0.4)
+
+ggplot(mean_cleanrawsmorph_whole_session, aes(time, crab, colour = genotype)) + 
+geom_line(size = 0.4)
+
+ggplot(mean_cleanrawsmorph_whole_session, aes(time, pathlen, colour = genotype)) + 
+geom_line(size = 0.4)
+
+ggplot(mean_cleanrawsmorph_whole_session, aes(time, speed, colour = genotype)) + 
+geom_line(size = 0.4)
+
+
+
+```
+
+
+```{r}
+
+##Maing midline length violin plot
+
+##Getting just basline data
+
+cleanrawsmorph_baseline <- cleanrawsmorph %>% 
+  filter(between(cleanrawsmorph$time, 300, 599))
+
+
+##Code to calculate mean of morphology metrics
+
+mean_cleanrawsmorph <- cleanrawsmorph_baseline %>% 
+  dplyr::select(genotype, plate_id, width:speed) 
+
+mean_cleanrawsmorph <- mean_cleanrawsmorph %>%  
+  group_by(genotype, plate_id) %>%
+  summarize_all(mean) 
+
+ggplot(mean_cleanrawsmorph, aes(genotype, midline, fill = genotype)) +
+  geom_violin(position = position_dodge(width = 0.65), trim = FALSE, size = 0.4) +
+  geom_point(position = position_jitterdodge(jitter.width = 0, jitter.height = 0.0,
+  dodge.width = 0.65, seed = 3), size = 0.3) +
+  scale_fill_manual(values = c("white", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_y_continuous(expand = c(0,0),
+                     limits = c(0.9,1.3), breaks = c(0.9,1.0,1.1,1.2,1.3)) +
+  theme_classic() +
+  labs(y = "Length (mm)", x = "") +
+  theme(legend.title= element_text(family="Arial Bold")) +
+  theme(legend.position = "none") +
+  theme(axis.line = element_line(colour = 'black', size = 0.4)) + 
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
+  theme(axis.ticks.length=unit(.03, "in")) +
+  theme(axis.ticks.x = element_line(size = 0)) +
+  theme(axis.text = element_text(family="Arial", colour = "black")) +
+  theme(axis.text.x = element_text(size = 0)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 8)) +
+  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 8)) +
+  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 0)) +
+ggsave("unc3_rev_midline_violin.jpeg", width = 2.7, height = 2.5, path = "/Users/troymcdiarmid/Desktop/")
+
+summary(lm(midline~genotype, mean_cleanrawsmorph))
+
+
+```
+
+
+##Analysis for the 1 day recovery 
+
+
+
+```{r}
+##The following code creates a dataframe with all morphology and baseline locomotion measures throughout the tracking session.
+
+##Comand to read .smorph file in 
+
+setwd("/Volumes/SAMWISE/Troy/reversibility/unc_3/OH13988_AID_1DAY_0717_2020/data")
+
+rawsmorph <- read_table2("data.smorph", col_names = c("plate_id", "width", "length", "morphwidth", "curve", "area", "midline", "pathlen", "bias", "dir", "angular", "aspect", "kink", "crab", "speed"))
+
+cleanrawsmorph <- rawsmorph %>% 
+  separate(plate_id, into = c("garbage", "plate_id", "genotype"), sep ="/") %>%
+  separate(genotype, into = c("genotype", "time"), sep = ":") %>% separate(genotype, into = c("genotype", "synch_conditions", "growth_conditions"), sep = "_") 
+
+####Make time numeric and round time
+
+cleanrawsmorph <- cleanrawsmorph %>% mutate(time = as.numeric(time)) %>% 
+  mutate(time = round(time, digits = 0)) 
+
+##Ordering the genotype factor for plotting
+    
+cleanrawsmorph$genotype <- factor(cleanrawsmorph$genotype,
+    levels = c('OH13988N', 'OH13988C', 'OH13988D', 'OH13988A', 'N2C', ordered = TRUE))
+
+##Filtering to exclude first 10s when the tracker has yet to calculate conistent measurements for certain metrics.
+
+cleanrawsmorph <- cleanrawsmorph %>% 
+  filter(between(cleanrawsmorph$time, 10, 1199)) %>% 
+  filter(!(genotype == 'N2C'))
+
+##Code to remove all 0 measurement entries and focus on the baseline period (300-599 seconds) which occurs after the worms have acclimated to the tracker but prior to the delivery of mechanosensory stimuli 
+
+cleanrawsmorph_baseline <- cleanrawsmorph %>% 
+  filter(between(cleanrawsmorph$time, 300, 599))
+
+```
+
+
+```{r}
+##Code to calculate mean of morphology metrics
+
+mean_cleanrawsmorph_whole_session <- cleanrawsmorph %>% 
+  select(genotype, time, width:speed) 
+
+mean_cleanrawsmorph_whole_session <- mean_cleanrawsmorph_whole_session %>%  
+  group_by(genotype, time) %>%
+  summarize_all(mean) 
+
+ggplot(mean_cleanrawsmorph_whole_session, aes(time, speed, colour = genotype)) + 
+geom_line(size = 0.3) +
+   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+    scale_y_continuous(expand = c(0,0),
+                     limits = c(0, 0.3), breaks = c(0,0.1,0.2,0.3)) +
+  scale_x_continuous(expand = c(0,0),
+                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
+  theme_classic() +
+  labs(y = "Speed (mm/s)", x = "Time (s)") +
+  theme(legend.position = "none") +
+  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
+  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
+  theme(axis.ticks.length=unit(.03, "in")) +
+  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
+ggsave("unc-3_1_day_rev_Speed_trace.jpeg", width = 3.5, height = 2.5, path = "/Users/troymcdiarmid/Desktop/")
 
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, curve, colour = genotype)) + 
