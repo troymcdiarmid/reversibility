@@ -813,7 +813,7 @@ cleanrawsrev <- cleanrawsrev %>%
 ##Reorder factors
 
 cleanrawsrev$genotype <- factor(cleanrawsrev$genotype,
-    levels = c('unc86N', 'unc86C4', 'unc86C25', 'unc86A25', 'unc86D25', 'N2C1', 'N2C4', ordered = TRUE))
+    levels = c('unc86N', 'unc86C25', 'unc86C4', 'unc86A25', 'unc86D25', 'N2C1', 'N2C4', ordered = TRUE))
 
 ##Mean rev data
 
@@ -1203,7 +1203,7 @@ ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_prob, colour = genotype)) +
   geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
   scale_shape_manual(values=c(16,16,16,16)) +
   scale_size_manual(values=c(4.25,4.25,4.25,4.25)) +
-  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "red")) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "red")) +
   labs(title = "", x = "Stimulus number", y = "Reversal probability") +
   theme(axis.line = element_line(colour = 'black', size = 2.25)) +
   theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
@@ -1230,7 +1230,7 @@ ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_dur, colour = genotype)) +
   geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
   scale_shape_manual(values=c(16,16,16,16)) +
   scale_size_manual(values=c(4.25,4.25,4.25,4.25)) +
-  scale_color_manual(values=c("black", "dodgerblue2", "#EDBD44", "red")) +
+  scale_color_manual(values=c("black", "dodgerblue2", "red")) +
   labs(title = "", x = "Stimulus number", y = "Reversal duration (S)") +
   theme(axis.line = element_line(colour = 'black', size = 2.25)) +
   theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
@@ -1257,7 +1257,7 @@ ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_speed, colour = genotype)) 
   geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
   scale_shape_manual(values=c(16,16,16,16)) +
   scale_size_manual(values=c(4.25,4.25,4.25,4.25)) +
-  scale_color_manual(values=c("black", "dodgerblue2", "#EDBD44", "red")) +
+  scale_color_manual(values=c("black", "dodgerblue2", "red")) +
   labs(title = "", x = "Stimulus number", y = "Reversal speed (mm/s)") +
   theme(axis.line = element_line(colour = 'black', size = 2.25)) +
   theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
@@ -1268,7 +1268,6 @@ ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_speed, colour = genotype)) 
   theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
   theme(legend.position="none") +
   ggsave("unc86_L4_AID_C25_C4_speed.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc86/run2/habituation")
-
 
 
 ```
