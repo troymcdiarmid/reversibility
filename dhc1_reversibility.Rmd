@@ -136,7 +136,7 @@ ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_prob, colour = genotype)) +
   geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
   scale_shape_manual(values=c(16,16,16)) +
   scale_size_manual(values=c(4.25,4.25,4.25)) +
-  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
   labs(title = "", x = "Stimulus number", y = "Reversal probability") +
   theme(axis.line = element_line(colour = 'black', size = 2.25)) +
   theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
@@ -163,7 +163,7 @@ ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_dur, colour = genotype)) +
   geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
   scale_shape_manual(values=c(16,16,16)) +
   scale_size_manual(values=c(4.25,4.25,4.25)) +
-  scale_color_manual(values=c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_color_manual(values=c("black", "#EDBD44", "dodgerblue2", "gray39")) +
   labs(title = "", x = "Stimulus number", y = "Reversal duration (S)") +
   theme(axis.line = element_line(colour = 'black', size = 2.25)) +
   theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
@@ -190,7 +190,7 @@ ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_speed, colour = genotype)) 
   geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
   scale_shape_manual(values=c(16,16,16)) +
   scale_size_manual(values=c(4.25,4.25,4.25)) +
-  scale_color_manual(values=c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_color_manual(values=c("black", "#EDBD44", "dodgerblue2", "gray39")) +
   labs(title = "", x = "Stimulus number", y = "Reversal speed (mm/s)") +
   theme(axis.line = element_line(colour = 'black', size = 2.25)) +
   theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
@@ -276,7 +276,7 @@ mean_cleanrawsmorph_whole_session <- mean_cleanrawsmorph_whole_session %>%
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, speed, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0, 0.3), breaks = c(0,0.1,0.2,0.3)) +
   scale_x_continuous(expand = c(0,0),
@@ -295,7 +295,7 @@ ggsave("dhc1_rev_speed_trace_3d.jpeg", width = 3.5, height = 2.5, path = "/Users
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, curve, colour = genotype)) + 
 geom_line(size = 0.3) +
-  scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0, 50), breaks = c(0,10,20,30,40,50)) +
   scale_x_continuous(expand = c(0,0),
@@ -313,7 +313,7 @@ ggsave("dhc1_rev_curve_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users/t
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, kink, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0,100), breaks = c(0,25,50,75,100)) +
   scale_x_continuous(expand = c(0,0),
@@ -331,7 +331,7 @@ ggsave("dhc1_rev_kink_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users/tr
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, length, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0, 1.25), breaks = c(0,0.25,0.5,0.75,1.0,1.25)) +
   scale_x_continuous(expand = c(0,0),
@@ -349,7 +349,7 @@ ggsave("dhc1_rev_Length_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users/
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, midline, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0.0, 1.5), breaks = c(0.0,0.25,0.5,0.75,1.00,1.25,1.5)) +
   scale_x_continuous(expand = c(0,0),
@@ -367,7 +367,7 @@ ggsave("dhc1_rev_midline_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, width, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0, 0.5), breaks = c(0.0,0.1,0.2,0.3,0.4,0.5)) +
   scale_x_continuous(expand = c(0,0),
@@ -385,7 +385,7 @@ ggsave("dhc1_rev_width_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users/t
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, pathlen, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0, 25), breaks = c(0,5,10,15,20,25)) +
   scale_x_continuous(expand = c(0,0),
@@ -403,7 +403,7 @@ ggsave("dhc1_rev_pathlength_trace_3d.jpeg", width = 3, height = 2.5, path = "/Us
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, bias, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(-1, 1), breaks = c(-1.0,-0.5,0,0.5,1.0)) +
   scale_x_continuous(expand = c(0,0),
@@ -421,7 +421,7 @@ ggsave("dhc1_rev_bias_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users/tr
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, dir, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0, 0.06), breaks = c(0,0.02,0.04,0.06)) +
   scale_x_continuous(expand = c(0,0),
@@ -439,7 +439,7 @@ ggsave("dhc1_rev_dir_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users/tro
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, crab, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0, 0.06), breaks = c(0,0.02,0.04,0.06)) +
   scale_x_continuous(expand = c(0,0),
@@ -457,7 +457,7 @@ ggsave("dhc1_rev_crab_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users/tr
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, aspect, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0.0, 0.6), breaks = c(0,0.2,0.4,0.6)) +
   scale_x_continuous(expand = c(0,0),
@@ -476,7 +476,7 @@ ggsave("dhc1_rev_aspect_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users/
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, angular, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0, 30), breaks = c(0,10,20,30)) +
   scale_x_continuous(expand = c(0,0),
@@ -631,7 +631,7 @@ ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_prob, colour = genotype)) +
   geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
   scale_shape_manual(values=c(16,16,16)) +
   scale_size_manual(values=c(4.25,4.25,4.25)) +
-  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
   labs(title = "", x = "Stimulus number", y = "Reversal probability") +
   theme(axis.line = element_line(colour = 'black', size = 2.25)) +
   theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
@@ -658,7 +658,7 @@ ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_dur, colour = genotype)) +
   geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
   scale_shape_manual(values=c(16,16,16)) +
   scale_size_manual(values=c(4.25,4.25,4.25)) +
-  scale_color_manual(values=c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_color_manual(values=c("black", "#EDBD44", "dodgerblue2", "gray39")) +
   labs(title = "", x = "Stimulus number", y = "Reversal duration (S)") +
   theme(axis.line = element_line(colour = 'black', size = 2.25)) +
   theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
@@ -685,7 +685,7 @@ ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_speed, colour = genotype)) 
   geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
   scale_shape_manual(values=c(16,16,16)) +
   scale_size_manual(values=c(4.25,4.25,4.25)) +
-  scale_color_manual(values=c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_color_manual(values=c("black", "#EDBD44", "dodgerblue2", "gray39")) +
   labs(title = "", x = "Stimulus number", y = "Reversal speed (mm/s)") +
   theme(axis.line = element_line(colour = 'black', size = 2.25)) +
   theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
@@ -774,7 +774,7 @@ mean_cleanrawsmorph_whole_session <- mean_cleanrawsmorph_whole_session %>%
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, speed, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0, 0.3), breaks = c(0,0.1,0.2,0.3)) +
   scale_x_continuous(expand = c(0,0),
@@ -793,7 +793,7 @@ ggsave("dhc1_rev_speed_trace_3d.jpeg", width = 3.5, height = 2.5, path = "/Users
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, curve, colour = genotype)) + 
 geom_line(size = 0.3) +
-  scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0, 50), breaks = c(0,10,20,30,40,50)) +
   scale_x_continuous(expand = c(0,0),
@@ -811,7 +811,7 @@ ggsave("dhc1_rev_curve_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users/t
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, kink, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0,100), breaks = c(0,25,50,75,100)) +
   scale_x_continuous(expand = c(0,0),
@@ -829,7 +829,7 @@ ggsave("dhc1_rev_kink_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users/tr
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, length, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0, 1.25), breaks = c(0,0.25,0.5,0.75,1.0,1.25)) +
   scale_x_continuous(expand = c(0,0),
@@ -865,7 +865,7 @@ ggsave("dhc1_rev_midline_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, width, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0, 0.5), breaks = c(0.0,0.1,0.2,0.3,0.4,0.5)) +
   scale_x_continuous(expand = c(0,0),
@@ -883,7 +883,7 @@ ggsave("dhc1_rev_width_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users/t
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, pathlen, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0, 25), breaks = c(0,5,10,15,20,25)) +
   scale_x_continuous(expand = c(0,0),
@@ -901,7 +901,7 @@ ggsave("dhc1_rev_pathlength_trace_3d.jpeg", width = 3, height = 2.5, path = "/Us
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, bias, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(-1, 1), breaks = c(-1.0,-0.5,0,0.5,1.0)) +
   scale_x_continuous(expand = c(0,0),
@@ -919,7 +919,7 @@ ggsave("dhc1_rev_bias_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users/tr
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, dir, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0, 0.06), breaks = c(0,0.02,0.04,0.06)) +
   scale_x_continuous(expand = c(0,0),
@@ -937,7 +937,7 @@ ggsave("dhc1_rev_dir_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users/tro
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, crab, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0, 0.06), breaks = c(0,0.02,0.04,0.06)) +
   scale_x_continuous(expand = c(0,0),
@@ -955,7 +955,7 @@ ggsave("dhc1_rev_crab_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users/tr
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, aspect, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0.0, 0.6), breaks = c(0,0.2,0.4,0.6)) +
   scale_x_continuous(expand = c(0,0),
@@ -974,7 +974,7 @@ ggsave("dhc1_rev_aspect_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users/
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, angular, colour = genotype)) + 
 geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+   scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0, 30), breaks = c(0,10,20,30)) +
   scale_x_continuous(expand = c(0,0),
