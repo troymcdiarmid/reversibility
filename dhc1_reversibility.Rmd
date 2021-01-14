@@ -275,22 +275,25 @@ mean_cleanrawsmorph_whole_session <- mean_cleanrawsmorph_whole_session %>%
 #Plots of morphology metrics for all groups
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, speed, colour = genotype)) + 
-geom_line(size = 0.3) +
+geom_line(size = 1) +
    scale_colour_manual(values = c("black", "#EDBD44", "dodgerblue2", "gray39")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0, 0.3), breaks = c(0,0.1,0.2,0.3)) +
   scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
+                     limits = c(0, 1240), breaks = c(0,300,600,900,1200)) +
   theme_classic() +
   labs(y = "Speed (mm/s)", x = "Time (s)") +
   theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("dhc1_rev_speed_trace_3d.jpeg", width = 3.5, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/3d_0.025mM/morphology")
+  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
+  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
+   theme(axis.ticks.length= unit(.25, "cm")) +
+  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(plot.margin = margin(11, 11, 11, 11)) +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
+  theme(legend.position="none") 
+ggsave("dhc1_rev_speed_trace_3d.jpeg", width = 14.5, height = 6.2, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/3d_0.025mM/morphology")
 
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, curve, colour = genotype)) + 
@@ -1566,7 +1569,7 @@ cleanrawsmorph <- cleanrawsmorph %>% mutate(time = as.numeric(time)) %>%
 ##Ordering the genotype factor for plotting
     
 cleanrawsmorph$genotype <- factor(cleanrawsmorph$genotype,
-    levels = c('DHC1N', 'DHC1C4', 'DHC1C25', 'DHC1A', 'DHC1D', 'N2C', ordered = TRUE))
+    levels = c('DHC1N', 'DHC1C4', 'DHC1C25', 'DHC1D', 'DHC1A', 'N2C', ordered = TRUE))
 
 ##Filter for relevant groups
 
@@ -1630,7 +1633,7 @@ geom_line(size = 0.3) +
   theme(axis.ticks.length=unit(.03, "in")) +
   theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
   theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc86_rev_curve_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur/morphology")
+ggsave("dhc1_pan_neur_curve_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur/morphology")
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, kink, colour = genotype)) + 
 geom_line(size = 0.3) +
