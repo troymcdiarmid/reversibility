@@ -548,7 +548,7 @@ geom_line(size = 0.3) +
 ggsave("unc3_rev_curve_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L4_recovery/morphology/")
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, kink, colour = genotype)) + 
-geom_line(size = 0.3) +
+geom_line(size = 1) +
    scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0,100), breaks = c(0,25,50,75,100)) +
@@ -557,16 +557,17 @@ geom_line(size = 0.3) +
   theme_classic() +
   labs(y = "Kink (radians)", x = "Time (S)") +
   theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc3_rev_kink_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L4_recovery/morphology/")
+  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
+  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
+  theme(axis.ticks.length= unit(.25, "cm")) +
+  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(plot.margin = margin(15, 15, 15, 15)) +
+ggsave("unc3_rev_kink_trace_l4.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L4_recovery/morphology/")
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, length, colour = genotype)) + 
-geom_line(size = 0.3) +
+geom_line(size = 1) +
    scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0, 1.25), breaks = c(0,0.25,0.5,0.75,1.0,1.25)) +
@@ -575,13 +576,14 @@ geom_line(size = 0.3) +
   theme_classic() +
   labs(y = "Length (mm)", x = "Time (s)") +
   theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc3_rev_Length_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L4_recovery/morphology/")
+  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
+  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
+  theme(axis.ticks.length= unit(.25, "cm")) +
+  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(plot.margin = margin(15, 15, 15, 15)) +
+ggsave("unc3_rev_Length_trace_l4.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L4_recovery/morphology/")
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, midline, colour = genotype)) + 
 geom_line(size = 0.3) +
@@ -1316,7 +1318,7 @@ geom_line(size = 0.3) +
 ggsave("unc3_rev_curve_trace_l2.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L2_recovery/morphology/")
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, kink, colour = genotype)) + 
-geom_line(size = 0.3) +
+geom_line(size = 1) +
    scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0,100), breaks = c(0,25,50,75,100)) +
@@ -1325,16 +1327,17 @@ geom_line(size = 0.3) +
   theme_classic() +
   labs(y = "Kink (radians)", x = "Time (S)") +
   theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc3_rev_kink_trace_l2.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L2_recovery/morphology/")
+  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
+  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
+  theme(axis.ticks.length= unit(.25, "cm")) +
+  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(plot.margin = margin(15, 15, 15, 15)) +
+ggsave("unc3_rev_kink_trace_l2.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L2_recovery/morphology/")
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, length, colour = genotype)) + 
-geom_line(size = 0.3) +
+geom_line(size = 1) +
    scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0, 1.25), breaks = c(0,0.25,0.5,0.75,1.0,1.25)) +
@@ -1343,13 +1346,14 @@ geom_line(size = 0.3) +
   theme_classic() +
   labs(y = "Length (mm)", x = "Time (s)") +
   theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc3_rev_Length_trace_l2.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L2_recovery/morphology/")
+  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
+  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
+  theme(axis.ticks.length= unit(.25, "cm")) +
+  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(plot.margin = margin(15, 15, 15, 15)) +
+ggsave("unc3_rev_Length_trace_l2.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L2_recovery/morphology/")
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, midline, colour = genotype)) + 
 geom_line(size = 0.3) +
@@ -2019,7 +2023,7 @@ geom_line(size = 0.3) +
 ggsave("unc3_rev_curve_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/3d_recovery/morphology/")
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, kink, colour = genotype)) + 
-geom_line(size = 0.3) +
+geom_line(size = 1) +
    scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0,100), breaks = c(0,25,50,75,100)) +
@@ -2028,16 +2032,17 @@ geom_line(size = 0.3) +
   theme_classic() +
   labs(y = "Kink (radians)", x = "Time (S)") +
   theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc3_rev_kink_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/3d_recovery/morphology/")
+  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
+  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
+  theme(axis.ticks.length= unit(.25, "cm")) +
+  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(plot.margin = margin(15, 15, 15, 15)) 
+ggsave("unc3_rev_kink_trace_3d.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/3d_recovery/morphology/")
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, length, colour = genotype)) + 
-geom_line(size = 0.3) +
+geom_line(size = 1) +
    scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
     scale_y_continuous(expand = c(0,0),
                      limits = c(0, 1.25), breaks = c(0,0.25,0.5,0.75,1.0,1.25)) +
@@ -2046,13 +2051,14 @@ geom_line(size = 0.3) +
   theme_classic() +
   labs(y = "Length (mm)", x = "Time (s)") +
   theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc3_rev_Length_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/3d_recovery/morphology/")
+  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
+  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
+  theme(axis.ticks.length= unit(.25, "cm")) +
+  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
+  theme(plot.margin = margin(15, 15, 15, 15))
+ggsave("unc3_rev_Length_trace_3d.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/3d_recovery/morphology/")
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, midline, colour = genotype)) + 
 geom_line(size = 0.3) +
