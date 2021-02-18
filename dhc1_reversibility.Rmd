@@ -1614,7 +1614,7 @@ geom_line(size = 0.3) +
   theme(axis.ticks.length=unit(.03, "in")) +
   theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
   theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("dhc1_pan_neur_rev_speed_trace_l4.jpeg", width = 3.5, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur/morphology")
+ggsave("unc3_rev_speed_trace_l4.jpeg", width = 3.5, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur/morphology")
 
 
 ggplot(mean_cleanrawsmorph_whole_session, aes(time, curve, colour = genotype)) + 
