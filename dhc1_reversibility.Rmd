@@ -9,6 +9,8 @@ output: html_document
 ```{r setup, include=FALSE}
 ##Load in them libraries
 library(tidyverse)
+library(scales)
+library(broom)
 
 ```
 
@@ -230,7 +232,7 @@ cd ../..
 ```{r}
 ##The following code creates a dataframe with all morphology and baseline locomotion measures throughout the tracking session.
 
-##Comand to read .smorph file in 
+##Command to read .smorph file in 
 
 setwd("/Volumes/SAMWISE/Troy/reversibility/dhc_1/N2_CA1210_3day_0218_2020/data")
 
@@ -1824,6 +1826,223 @@ ggsave("dhc1_pan_neur_rev_angular_trace_l4.jpeg", width = 3, height = 2.5, path 
 
 ```
 
+
+
+
+```{r}
+
+##Direct comparison supplemental figures
+
+##Code to remove all 0 measurement entries and focus on the baseline period (300-599 seconds) which occurs after the worms have acclimated to the tracker but prior to the delivery of mechanosensory stimuli 
+
+cleanrawsmorph_baseline <- cleanrawsmorph %>% 
+  filter(between(cleanrawsmorph$time, 300, 599))
+
+
+##Code to calculate mean of morphology metrics accross plates
+
+mean_cleanrawsmorph <- cleanrawsmorph_baseline %>% 
+  dplyr::select(genotype, plate_id, width:speed) 
+
+mean_cleanrawsmorph <- mean_cleanrawsmorph %>%  
+  group_by(genotype, plate_id) %>%
+  summarize_all(mean) 
+
+##Calculating absolute means and Sds across genomes 
+
+genotype_means <- mean_cleanrawsmorph %>% 
+  summarise_all(mean) 
+
+genotype_sds <- mean_cleanrawsmorph %>% 
+  summarise_all(sd) 
+
+##Plotting length
+
+ggplot(mean_cleanrawsmorph, aes(genotype, length, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=length-genotype_sds$length, ymax=length+genotype_sds$length), width = 0, size = 0.4, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, length, fill = genotype), colour = "black", shape = 21) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_y_continuous(expand = c(0,0),
+                     limits = c(0.6,1.2), breaks = c(0.6,0.8,1.0,1.2)) +
+  theme_classic() +
+  labs(y = "Length (mm)", x = "") +
+  theme(legend.title= element_text(family="Arial Bold")) +
+  theme(legend.position = "none") +
+  theme(axis.line = element_line(colour = 'black', size = 0.6)) + 
+  theme(legend.position = "none") +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.6)) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+  theme(axis.ticks.length=unit(.03, "in")) +
+  theme(axis.text = element_text(family="Arial", colour = "black", size = 11)) +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.title = element_text(family="Arial", colour = "black", size = 11)) +
+ggsave("dhc1_l4_length_dot_mean.jpeg", width = 2.1, height = 2.3, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/dhc1_S2_graphs")
+
+##Fit a linear model and estimate signficance of group differences with adjusted p-values. 
+
+fit <- summary(lm(kink~genotype, mean_cleanrawsmorph))
+
+tidy_fit <- tidy(fit)  
+
+qvals <- p.adjust(tidy_fit$p.value, "BH")
+
+tidy_fit$q.vals <- qvals
+
+pairwise.t.test(x = mean_cleanrawsmorph$length, g = mean_cleanrawsmorph$genotype, p.adjust.method = "bonf")
+
+
+##Plotting kink
+
+ggplot(mean_cleanrawsmorph, aes(genotype, kink, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=kink-genotype_sds$kink, ymax=kink+genotype_sds$kink), width = 0, size = 0.5, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, kink, fill = genotype), colour = "black", shape = 21) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_y_continuous(expand = c(0,0),
+                     limits = c(30,50), breaks = c(30,40,50)) +
+  theme_classic() +
+  labs(y = "Kink (radians)", x = "") +
+  theme(legend.title= element_text(family="Arial Bold")) +
+  theme(legend.position = "none") +
+  theme(axis.line = element_line(colour = 'black', size = 0.6)) + 
+  theme(legend.position = "none") +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.6)) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+  theme(axis.ticks.length=unit(.03, "in")) +
+  theme(axis.text = element_text(family="Arial", colour = "black", size = 11)) +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.title = element_text(family="Arial", colour = "black", size = 11)) +
+ggsave("dhc1_l4_kink_dot_mean.jpeg", width = 2.1, height = 2.3, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/dhc1_S2_graphs")
+
+
+##Fit a linear model and estimate signficance of group differences with adjusted p-values. 
+
+fit <- summary(lm(kink~genotype, mean_cleanrawsmorph))
+
+tidy_fit <- tidy(fit)  
+
+qvals <- p.adjust(tidy_fit$p.value, "BH")
+
+tidy_fit$q.vals <- qvals
+
+pairwise.t.test(x = mean_cleanrawsmorph$kink, g = mean_cleanrawsmorph$genotype, p.adjust.method = "bonf")
+
+
+##Plotting Aspect
+
+ggplot(mean_cleanrawsmorph, aes(genotype, aspect, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=aspect-genotype_sds$aspect, ymax=aspect+genotype_sds$aspect), width = 0, size = 0.5, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, aspect, fill = genotype), colour = "black", shape = 21) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_y_continuous(expand = c(0,0),
+                     limits = c(0.2,0.4), breaks = c(0.2,0.3,0.4)) +
+  theme_classic() +
+  labs(y = "Aspect (width-length ratio)", x = "") +
+  theme(legend.title= element_text(family="Arial Bold")) +
+  theme(legend.position = "none") +
+  theme(axis.line = element_line(colour = 'black', size = 0.6)) + 
+  theme(legend.position = "none") +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.6)) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+  theme(axis.ticks.length=unit(.03, "in")) +
+  theme(axis.text = element_text(family="Arial", colour = "black", size = 11)) +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.title = element_text(family="Arial", colour = "black", size = 11)) +
+ggsave("dhc1_l4_aspect_dot_mean.jpeg", width = 2.1, height = 2.3, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/dhc1_S2_graphs")
+
+
+##Fit a linear model and estimate signficance of group differences with adjusted p-values. 
+
+fit <- summary(lm(aspect~genotype, mean_cleanrawsmorph))
+
+tidy_fit <- tidy(fit)  
+
+qvals <- p.adjust(tidy_fit$p.value, "BH")
+
+tidy_fit$q.vals <- qvals
+
+pairwise.t.test(x = mean_cleanrawsmorph$aspect, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+
+##Plotting Speed
+
+ggplot(mean_cleanrawsmorph, aes(genotype, speed, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=speed-genotype_sds$speed, ymax=speed+genotype_sds$speed), width = 0, size = 0.5, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, speed, fill = genotype), colour = "black", shape = 21) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_y_continuous(expand = c(0,0),
+                     limits = c(0,0.15), breaks = c(0,0.05,0.1,0.15)) +
+  theme_classic() +
+  labs(y = "Speed (mm/s)", x = "") +
+  theme(legend.title= element_text(family="Arial Bold")) +
+  theme(legend.position = "none") +
+  theme(axis.line = element_line(colour = 'black', size = 0.6)) + 
+  theme(legend.position = "none") +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.6)) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+  theme(axis.ticks.length=unit(.03, "in")) +
+  theme(axis.text = element_text(family="Arial", colour = "black", size = 11)) +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.title = element_text(family="Arial", colour = "black", size = 11)) +
+ggsave("dhc1_l4_speed_dot_mean.jpeg", width = 2.1, height = 2.3, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/dhc1_S2_graphs")
+
+
+##Fit a linear model and estimate signficance of group differences with adjusted p-values. 
+
+fit <- summary(lm(speed~genotype, mean_cleanrawsmorph))
+
+tidy_fit <- tidy(fit)  
+
+qvals <- p.adjust(tidy_fit$p.value, "BH")
+
+tidy_fit$q.vals <- qvals
+
+pairwise.t.test(x = mean_cleanrawsmorph$speed, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+
+##Plotting Curve
+
+ggplot(mean_cleanrawsmorph, aes(genotype, curve, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=curve-genotype_sds$curve, ymax=curve+genotype_sds$curve), width = 0, size = 0.5, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, curve, fill = genotype), colour = "black", shape = 21) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_y_continuous(expand = c(0,0),
+                     limits = c(20,35), breaks = c(20,25,30,35)) +
+  theme_classic() +
+  labs(y = "Curvature (radians)", x = "") +
+  theme(legend.title= element_text(family="Arial Bold")) +
+  theme(legend.position = "none") +
+  theme(axis.line = element_line(colour = 'black', size = 0.6)) + 
+  theme(legend.position = "none") +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.6)) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+  theme(axis.ticks.length=unit(.03, "in")) +
+  theme(axis.text = element_text(family="Arial", colour = "black", size = 11)) +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.title = element_text(family="Arial", colour = "black", size = 11)) +
+ggsave("dhc1_l4_curve_dot_mean.jpeg", width = 2.1, height = 2.3, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/dhc1_S2_graphs")
+
+
+##Fit a linear model and estimate signficance of group differences with adjusted p-values. 
+
+fit <- summary(lm(curve~genotype, mean_cleanrawsmorph))
+
+tidy_fit <- tidy(fit)  
+
+qvals <- p.adjust(tidy_fit$p.value, "BH")
+
+tidy_fit$q.vals <- qvals
+
+pairwise.t.test(x = mean_cleanrawsmorph$curve, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+
+```
 
 
 
