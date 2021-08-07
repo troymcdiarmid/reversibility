@@ -46,7 +46,7 @@ cleanrawsrev <- cleanrawsrev %>%
   separate(plate_id, into = c("garbage", "plate_id", "genotype"), sep ="/") %>%
   separate(genotype, into = c("genotype", "time"), sep = ":")  %>% 
   separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") %>% 
-  select(genotype:dur_100th_percentile)
+  select(plate_id:dur_100th_percentile)
 
 ##Optional Code to rename your factors
 

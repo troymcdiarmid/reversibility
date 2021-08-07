@@ -1041,8 +1041,15 @@ cleanrawsrev <- read_table2("data.srev", col_names = c("plate_id", "already_rev"
 cleanrawsrev <- cleanrawsrev %>% 
   separate(plate_id, into = c("garbage", "plate_id", "genotype"), sep ="/") %>%
   separate(genotype, into = c("genotype", "time"), sep = ":")  %>% 
-  separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") %>% 
-  select(genotype:dur_100th_percentile)
+  separate(genotype, into = c("genotype", "tracker"), sep = "s_") %>% 
+  separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") %>%
+  separate(tracker, into = c("tracker", "date"), sep = "1") %>%
+  select(plate_id:dur_100th_percentile)
+
+##Remove data from tracker C becuase it delivered faulty taps
+
+cleanrawsrev <- cleanrawsrev %>% 
+  filter(!tracker == "C")
 
 
 ##Make time numeric and round time 
@@ -2042,10 +2049,80 @@ tidy_fit$q.vals <- qvals
 
 pairwise.t.test(x = mean_cleanrawsmorph$curve, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
 
+
 ```
 
 
 
+```{r}
+
+##Calculating significance accross all morphology metrics for dhc-1 heatmap
+
+pairwise.t.test(x = mean_cleanrawsmorph$length, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$width, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$curve, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$kink, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$aspect, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$angular, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$midline, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$bias, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$speed, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$area, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$morphwidth, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$crab, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH") 
+pairwise.t.test(x = mean_cleanrawsmorph$pathlen, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$dir, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+
+##Calculating significance for all sensory/learning metrics for dhc-1 heatmap 
+
+Initial_revs <- cleanrawsrev %>%
+  filter(time %in% c(600)) %>% 
+  filter(genotype %in% c("DHC1C25", "DHC1D", "DHC1A", "DHC1N"))
+
+mean_initial_revs <- Initial_revs %>% 
+  group_by(genotype, plate_id) %>%
+  summarize_all(mean) 
+  
+
+pairwise.t.test(x = mean_initial_revs$rev_prob, g = mean_initial_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_initial_revs$rev_dur, g = mean_initial_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_initial_revs$rev_dist, g = mean_initial_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_initial_revs$rev_speed, g = mean_initial_revs$genotype, p.adjust.method = "BH")
+
+
+Final_revs <- cleanrawsrev %>%
+  filter(time %in% c(870:890)) %>% 
+  filter(genotype %in% c("DHC1C25", "DHC1D", "DHC1A", "DHC1N"))
+
+mean_final_revs <- Final_revs %>%  
+  group_by(genotype, plate_id) %>%
+  summarize_all(mean) 
+
+
+pairwise.t.test(x = mean_final_revs$rev_prob, g = mean_final_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_final_revs$rev_dur, g = mean_final_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_final_revs$rev_speed, g = mean_final_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_final_revs$rev_dist, g = mean_final_revs$genotype, p.adjust.method = "BH")
+
+
+Spont_revs <- cleanrawsrev %>%
+  filter(time %in% c(1190)) %>% 
+  filter(genotype %in% c("DHC1C25", "DHC1D", "DHC1A", "DHC1N"))
+
+mean_spont_revs <- Spont_revs %>%  
+  group_by(genotype, plate_id) %>%
+  summarize_all(mean) 
+
+
+pairwise.t.test(x = mean_spont_revs$rev_prob, g = mean_spont_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_spont_revs$rev_dur, g = mean_spont_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_spont_revs$rev_dist, g = mean_spont_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_spont_revs$rev_speed, g = mean_spont_revs$genotype, p.adjust.method = "BH")
+
+ggplot(mean_initial_revs, aes(genotype, rev_dist, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+
+```
 
 
 
