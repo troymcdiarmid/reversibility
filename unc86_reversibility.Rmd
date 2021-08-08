@@ -847,7 +847,6 @@ ggsave("unc86_rev_angular_trace_l4.jpeg", width = 3, height = 2.5, path = "/User
 
 
 
-
 ```{r}
 
 ##Calculating significance accross all morphology metrics for dhc-1 heatmap
@@ -1018,6 +1017,8 @@ ggplot(mean_all_revs, aes(genotype, rev_dist, colour = genotype)) +
 
 
 ```
+
+
 
 
 

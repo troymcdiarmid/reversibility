@@ -36,7 +36,6 @@ cd ../..
 
 
 ```{r}
-##Baseline N2 vs nlg-1::AID::GFP test
 
 ##Read in summary of reversal data file (data.srev) 
 
@@ -882,48 +881,50 @@ genotype_sds <- mean_cleanrawsmorph %>%
 
 ##Calculating stats
 
+##Calculating stats
+
 pairwise.t.test(x = mean_cleanrawsmorph$length, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_cleanrawsmorph$width, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
-pairwise.t.test(x = mean_cleanrawsmorph$curve, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
-pairwise.t.test(x = mean_cleanrawsmorph$kink, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
-pairwise.t.test(x = mean_cleanrawsmorph$aspect, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
-pairwise.t.test(x = mean_cleanrawsmorph$angular, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_cleanrawsmorph$midline, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
-pairwise.t.test(x = mean_cleanrawsmorph$bias, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
-pairwise.t.test(x = mean_cleanrawsmorph$speed, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
-pairwise.t.test(x = mean_cleanrawsmorph$area, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_cleanrawsmorph$morphwidth, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
-pairwise.t.test(x = mean_cleanrawsmorph$crab, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH") 
+pairwise.t.test(x = mean_cleanrawsmorph$area, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_cleanrawsmorph$pathlen, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$bias, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_cleanrawsmorph$dir, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$angular, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$aspect, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$kink, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$crab, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH") 
+pairwise.t.test(x = mean_cleanrawsmorph$speed, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$curve, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
 
 ggplot(mean_cleanrawsmorph, aes(genotype, length, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
 ggplot(mean_cleanrawsmorph, aes(genotype, width, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, area, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, curve, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, kink, colour = genotype)) +
+ggplot(mean_cleanrawsmorph, aes(genotype, midline, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
 ggplot(mean_cleanrawsmorph, aes(genotype, morphwidth, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, dir, colour = genotype)) +
+ggplot(mean_cleanrawsmorph, aes(genotype, area, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
 ggplot(mean_cleanrawsmorph, aes(genotype, pathlen, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, midline, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
 ggplot(mean_cleanrawsmorph, aes(genotype, bias, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, aspect, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, speed, colour = genotype)) +
+ggplot(mean_cleanrawsmorph, aes(genotype, dir, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
 ggplot(mean_cleanrawsmorph, aes(genotype, angular, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, aspect, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, kink, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
 ggplot(mean_cleanrawsmorph, aes(genotype, crab, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, speed, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, curve, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
 
 ##Calculating significance for all sensory/learning metrics for dhc-1 heatmap 
