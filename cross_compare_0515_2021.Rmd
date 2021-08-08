@@ -15,8 +15,8 @@ library(UpSetR)
 
 
 ```{r}
-# library
-combined_phenos <- read_excel("/Users/troymcdiarmid/Downloads/Combined_reverse_data_0515_2021.xlsx")
+# Making l4 combined graphs
+combined_phenos <- read_excel("/Users/troymcdiarmid/Documents/Reversibility_materials/combined_reverse_data_0806_2021.xlsx")
 
 ##Calculating sum of sig features in each feature class
 
@@ -25,7 +25,8 @@ pheno_counts <- combined_phenos %>%
   mutate(baseline = (pathlen + bias + dir + angular + aspect + kink + crab + speed + curve)) %>% 
   mutate(sensitivity = (initRespPb + initRespDuration + initRespSpeed + initRespDistance)) %>% 
   mutate(learning = (habituationPb + habituationDuration + habituationSpeed + habituationDistance)) %>% 
-  mutate(recovery = (spontPb + spontDuration + spontSpeed + spontDistance)) 
+  mutate(recovery = (spontPb + spontDuration + spontSpeed + spontDistance)) %>% 
+  mutate(mean_resp = (mean_rev_prob + mean_rev_speed + mean_rev_dur + mean_rev_dist))
 
 ##Order genotype factor
 
@@ -34,11 +35,11 @@ pheno_counts$Condition <- factor(pheno_counts$Condition, levels = pheno_counts$C
 ##Gather pheno_counts
 
 pheno_counts <- pheno_counts %>% 
-  gather(`morphology`, `baseline`, `sensitivity`, `learning`, `recovery`, key = "feature_class", value = "count")
+  gather(`morphology`, `baseline`, `sensitivity`, `learning`, `recovery`, `mean_resp`, key = "feature_class", value = "count")
 ##order factors
 
 pheno_counts$feature_class <- factor(pheno_counts$feature_class,
-    levels = c('recovery', 'learning', 'sensitivity', 'baseline', 'morphology'), ordered = TRUE)
+    levels = c('recovery', 'learning', 'sensitivity', 'mean_resp','baseline', 'morphology'), ordered = TRUE)
 
 
 ##Make specific plots for each gene
@@ -50,7 +51,7 @@ ggplot(data = pheno_counts_unc3) +
   geom_bar(aes(x = Condition, y = count, fill = feature_class), stat = "identity") +
   theme_classic() +
   scale_y_continuous(position = "right") +
-    ylim(0,15) +
+    ylim(0,25) +
   labs(y = "", x = "") +
   theme(legend.title= element_text(family="Arial Bold")) +
   theme(legend.text= element_text(family="Arial Bold")) +
@@ -64,7 +65,7 @@ ggplot(data = pheno_counts_unc3) +
     theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
   theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
   theme(axis.title.y = element_text(family="Arial Bold", colour = "black", size = 30)) +
-  scale_fill_manual(values=c("#76b6f4", "#d1e6fb", "dodgerblue2", "gray39", "black")) 
+  scale_fill_manual(values=c("#76b6f4", "#d1e6fb", "dodgerblue2", "#0b355f", "gray39", "black")) 
 
 ggsave("ASD_Reverse_Pheno_counts_unc3.jpeg", width = 3.5, height = 12, path = "/Users/troymcdiarmid/Desktop/")
 
@@ -75,7 +76,7 @@ ggplot(data = pheno_counts_dhc1) +
   geom_bar(aes(x = Condition, y = count, fill = feature_class), stat = "identity") +
   theme_classic() +
   scale_y_continuous(position = "right") +
-    ylim(0,15) +
+    ylim(0,25) +
   labs(y = "", x = "") +
   theme(legend.title= element_text(family="Arial Bold")) +
   theme(legend.text= element_text(family="Arial Bold")) +
@@ -89,7 +90,7 @@ ggplot(data = pheno_counts_dhc1) +
     theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
   theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
   theme(axis.title.y = element_text(family="Arial Bold", colour = "black", size = 30)) +
-  scale_fill_manual(values=c("#76b6f4", "#d1e6fb", "dodgerblue2", "gray39", "black")) 
+  scale_fill_manual(values=c("#76b6f4", "#d1e6fb", "dodgerblue2", "#0b355f", "gray39", "black")) 
 
 ggsave("ASD_Reverse_Pheno_counts_dhc1.jpeg", width = 3.5, height = 12, path = "/Users/troymcdiarmid/Desktop/")
 
@@ -114,7 +115,7 @@ ggplot(data = pheno_counts_unc86) +
     theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
   theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
   theme(axis.title.y = element_text(family="Arial Bold", colour = "black", size = 30)) +
-  scale_fill_manual(values=c("#76b6f4", "#d1e6fb", "dodgerblue2", "gray39", "black")) 
+  scale_fill_manual(values=c("#76b6f4", "#d1e6fb", "dodgerblue2", "#0b355f", "gray39", "black")) 
 
 ggsave("ASD_Reverse_Pheno_counts_unc86.jpeg", width = 3.5, height = 12, path = "/Users/troymcdiarmid/Desktop/")
 
@@ -140,7 +141,7 @@ ggplot(data = pheno_counts_unc86) +
     theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
   theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
   theme(axis.title.y = element_text(family="Arial Bold", colour = "black", size = 30)) +
-  scale_fill_manual(values=c("#76b6f4", "#d1e6fb", "dodgerblue2", "gray39", "black")) 
+  scale_fill_manual(values=c("#76b6f4", "#d1e6fb", "dodgerblue2", "#0b355f", "gray39", "black")) 
 
 ggsave("ASD_Reverse_Pheno_counts_nlg1.jpeg", width = 3.5, height = 12, path = "/Users/troymcdiarmid/Desktop/")
 
@@ -160,7 +161,7 @@ ggsave("ASD_Reverse_Pheno_counts_nlg1.jpeg", width = 3.5, height = 12, path = "/
 
 combined_phenos_C <- as.data.frame(combined_phenos) %>% 
   select(-Genotype) %>% 
-  filter(Condition %in% c("unc3_C", "neur_dhc1_C", "unc86_C", "nlg1_C"))
+  filter(Condition %in% c("unc3C", "unc86C", "dhc1C"))
   
 
 rownames(combined_phenos_C) <- combined_phenos_C$Condition
@@ -176,33 +177,9 @@ ggsave("continous_upset_0516_2021.jpeg", path = "/Users/troymcdiarmid/Desktop/")
 
 ##Filterning for developmental degradation/rescue groups
 
-combined_phenos <- read_excel("/Users/troymcdiarmid/Downloads/Combined_reverse_data_upset_0515_2021.xlsx")
-
-##Calculating sum of sig features in each feature class
-
-pheno_counts <- combined_phenos %>% 
-  mutate(morphology = (length + width + area + midline + morphwidth)) %>% 
-  mutate(baseline = (pathlen + bias + dir + angular + aspect + kink + crab + speed + curve)) %>% 
-  mutate(sensitivity = (initRespPb + initRespDuration + initRespSpeed + initRespDistance)) %>% 
-  mutate(learning = (habituationPb + habituationDuration + habituationSpeed + habituationDistance)) %>% 
-  mutate(recovery = (spontPb + spontDuration + spontSpeed + spontDistance)) 
-
-##Order genotype factor
-
-pheno_counts$Condition <- factor(pheno_counts$Condition, levels = pheno_counts$Condition)
-
-##Gather pheno_counts
-
-pheno_counts <- pheno_counts %>% 
-  gather(`morphology`, `baseline`, `sensitivity`, `learning`, `recovery`, key = "feature_class", value = "count")
-##order factors
-
-pheno_counts$feature_class <- factor(pheno_counts$feature_class,
-    levels = c('recovery', 'learning', 'sensitivity', 'baseline', 'morphology'), ordered = TRUE)
-
 combined_phenos_D <- as.data.frame(combined_phenos) %>% 
   select(-Genotype) %>% 
-  filter(Condition %in% c("unc3_D", "neur_dhc1_D", "unc86_D", "nlg1_D"))
+  filter(Condition %in% c("unc3D", "dhc1D", "unc86D"))
   
 
 rownames(combined_phenos_D) <- combined_phenos_D$Condition

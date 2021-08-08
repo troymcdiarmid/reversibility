@@ -1032,7 +1032,17 @@ ggplot(mean_all_revs, aes(genotype, rev_dist, colour = genotype)) +
 
 
 
+
+
+
+
+
+
 ##Analysis for the 1 day recovery run 2
+
+
+
+
 
 
 
@@ -1872,10 +1882,189 @@ pairwise.t.test(x = mean_cleanrawsmorph$kink, g = mean_cleanrawsmorph$genotype, 
 
 
 
+```{r}
+
+##Calculating significance accross all morphology metrics for dhc-1 heatmap
+
+
+##Code to calculate mean of morphology metrics accross plates
+
+cleanrawsmorph_baseline <- cleanrawsmorph %>% 
+  filter(between(cleanrawsmorph$time, 300, 599))
+
+mean_cleanrawsmorph <- cleanrawsmorph_baseline %>% 
+  dplyr::select(genotype, plate_id, width:speed) 
+
+mean_cleanrawsmorph <- mean_cleanrawsmorph %>%  
+  group_by(genotype, plate_id) %>%
+  summarize_all(mean) 
+
+##Calculating absolute means and Sds across genomes 
+
+genotype_means <- mean_cleanrawsmorph %>% 
+  summarise_all(mean) 
+
+genotype_sds <- mean_cleanrawsmorph %>% 
+  summarise_all(sd) 
+
+##Calculating stats
+
+##Calculating stats
+
+pairwise.t.test(x = mean_cleanrawsmorph$length, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$width, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$midline, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$morphwidth, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$area, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$pathlen, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$bias, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$dir, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$angular, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$aspect, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$kink, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$crab, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH") 
+pairwise.t.test(x = mean_cleanrawsmorph$speed, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$curve, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+
+ggplot(mean_cleanrawsmorph, aes(genotype, length, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, width, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, midline, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, morphwidth, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, area, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, pathlen, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, bias, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, dir, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, angular, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, aspect, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, kink, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, crab, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, speed, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, curve, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+
+##Calculating significance for all sensory/learning metrics for dhc-1 heatmap 
+
+Initial_revs <- cleanrawsrev %>%
+  filter(time %in% c(600)) %>% 
+  filter(genotype %in% c("OH13988N", "OH13988C", "OH13988A", "OH13988D"))
+
+mean_initial_revs <- Initial_revs %>% 
+  group_by(genotype, plate_id) %>%
+  summarize_all(mean) 
+  
+
+pairwise.t.test(x = mean_initial_revs$rev_prob, g = mean_initial_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_initial_revs$rev_dur, g = mean_initial_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_initial_revs$rev_dist, g = mean_initial_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_initial_revs$rev_speed, g = mean_initial_revs$genotype, p.adjust.method = "BH")
+
+ggplot(mean_initial_revs, aes(genotype, rev_prob, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_initial_revs, aes(genotype, rev_dur, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_initial_revs, aes(genotype, rev_speed, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_initial_revs, aes(genotype, rev_dist, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+
+
+Final_revs <- cleanrawsrev %>%
+  filter(time %in% c(870:890)) %>% 
+  filter(genotype %in% c("OH13988N", "OH13988C", "OH13988A", "OH13988D"))
+
+mean_final_revs <- Final_revs %>%  
+  group_by(genotype, plate_id) %>%
+  summarize_all(mean) 
+
+
+pairwise.t.test(x = mean_final_revs$rev_prob, g = mean_final_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_final_revs$rev_dur, g = mean_final_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_final_revs$rev_speed, g = mean_final_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_final_revs$rev_dist, g = mean_final_revs$genotype, p.adjust.method = "BH")
+
+ggplot(mean_final_revs, aes(genotype, rev_prob, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_final_revs, aes(genotype, rev_dur, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_final_revs, aes(genotype, rev_speed, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_final_revs, aes(genotype, rev_dist, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+
+
+
+Spont_revs <- cleanrawsrev %>%
+  filter(time %in% c(1190)) %>% 
+  filter(genotype %in% c("OH13988N", "OH13988C", "OH13988A", "OH13988D"))
+
+mean_spont_revs <- Spont_revs %>%  
+  group_by(genotype, plate_id) %>%
+  summarize_all(mean) 
+
+
+pairwise.t.test(x = mean_spont_revs$rev_prob, g = mean_spont_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_spont_revs$rev_dur, g = mean_spont_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_spont_revs$rev_dist, g = mean_spont_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_spont_revs$rev_speed, g = mean_spont_revs$genotype, p.adjust.method = "BH")
+
+
+ggplot(mean_spont_revs, aes(genotype, rev_prob, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_spont_revs, aes(genotype, rev_dur, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_spont_revs, aes(genotype, rev_speed, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_spont_revs, aes(genotype, rev_dist, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+
+
+all_revs <- cleanrawsrev %>%
+  filter(genotype %in% c("OH13988N", "OH13988C", "OH13988A", "OH13988D")) 
+
+mean_all_revs <- all_revs %>% 
+  group_by(genotype, plate_id) %>%
+  summarize_all(mean) 
+
+pairwise.t.test(x = mean_all_revs$rev_prob, g = mean_all_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_all_revs$rev_speed, g = mean_all_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_all_revs$rev_dur, g = mean_all_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_all_revs$rev_dist, g = mean_all_revs$genotype, p.adjust.method = "BH")
+
+ggplot(mean_all_revs, aes(genotype, rev_prob, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_all_revs, aes(genotype, rev_dur, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_all_revs, aes(genotype, rev_speed, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_all_revs, aes(genotype, rev_dist, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+
+
+
+```
+
+
+
+
 
 
 
 ##Analysis for the 3 day recovery 
+
+
 
 
 
