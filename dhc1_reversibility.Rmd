@@ -48,7 +48,7 @@ cleanrawsrev <- cleanrawsrev %>%
   separate(plate_id, into = c("garbage", "plate_id", "genotype"), sep ="/") %>%
   separate(genotype, into = c("genotype", "time"), sep = ":")  %>% 
   separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") %>% 
-  select(genotype:dur_100th_percentile)
+  select(genotype:dur_100th_percentile) 
 
 
 ##Make time numeric and round time 
@@ -1560,7 +1560,7 @@ cd ../..
 ```{r}
 ##The following code creates a dataframe with all morphology and baseline locomotion measures throughout the tracking session.
 
-##Comand to read .smorph file in 
+##Command to read .smorph file in 
 
 setwd("/Volumes/SAMWISE/Troy/reversibility/dhc_1/pndhc1_AID_1126_2020/data")
 
@@ -1568,7 +1568,10 @@ rawsmorph <- read_table2("data.smorph", col_names = c("plate_id", "width", "leng
 
 cleanrawsmorph <- rawsmorph %>% 
   separate(plate_id, into = c("garbage", "plate_id", "genotype"), sep ="/") %>%
-  separate(genotype, into = c("genotype", "time"), sep = ":") %>% separate(genotype, into = c("genotype", "synch_conditions", "growth_conditions"), sep = "_") 
+  separate(genotype, into = c("genotype", "time"), sep = ":") %>% separate(genotype, into = c("genotype", "synch_conditions", "growth_conditions"), sep = "_") %>% 
+  separate(growth_conditions, into = c("growth_conditions", "tracker"), sep = "0") %>% 
+  filter(!tracker == "C")
+  
 
 ####Make time numeric and round time
 
@@ -2071,6 +2074,16 @@ mean_cleanrawsmorph <- mean_cleanrawsmorph %>%
   group_by(genotype, plate_id) %>%
   summarize_all(mean) 
 
+##Calculating absolute means and Sds across genomes 
+
+genotype_means <- mean_cleanrawsmorph %>% 
+  summarise_all(mean) 
+
+genotype_sds <- mean_cleanrawsmorph %>% 
+  summarise_all(sd) 
+
+##Calculating stats
+
 pairwise.t.test(x = mean_cleanrawsmorph$length, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_cleanrawsmorph$width, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_cleanrawsmorph$curve, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
@@ -2085,7 +2098,6 @@ pairwise.t.test(x = mean_cleanrawsmorph$morphwidth, g = mean_cleanrawsmorph$geno
 pairwise.t.test(x = mean_cleanrawsmorph$crab, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH") 
 pairwise.t.test(x = mean_cleanrawsmorph$pathlen, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_cleanrawsmorph$dir, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
-
 
 ggplot(mean_cleanrawsmorph, aes(genotype, length, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
@@ -2212,7 +2224,6 @@ ggplot(mean_all_revs, aes(genotype, rev_speed, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
 ggplot(mean_all_revs, aes(genotype, rev_dist, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
-
 
 
 ```
