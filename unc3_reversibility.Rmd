@@ -482,8 +482,16 @@ rawsmorph <- read_table2("data.smorph", col_names = c("plate_id", "width", "leng
 
 cleanrawsmorph <- rawsmorph %>% 
   separate(plate_id, into = c("garbage", "plate_id", "genotype"), sep ="/") %>%
-  separate(genotype, into = c("genotype", "time"), sep = ":") %>% separate(genotype, into = c("genotype", "synch_conditions", "growth_conditions"), sep = "_") 
+  separate(genotype, into = c("genotype", "time"), sep = ":") %>% 
+  separate(genotype, into = c("genotype", "tracker"), sep = "s_") %>% 
+  separate(tracker, into = c("tracker", "date"), sep = "0") %>% 
+  separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") 
 
+##Filtering not for tracker C becuase it delivered faulty taps
+
+cleanrawsmorph <- cleanrawsmorph %>% 
+  filter(!tracker == "C")
+  
 ####Make time numeric and round time
 
 cleanrawsmorph <- cleanrawsmorph %>% mutate(time = as.numeric(time)) %>% 
@@ -1051,8 +1059,15 @@ cleanrawsrev <- read_table2("data.srev", col_names = c("plate_id", "already_rev"
 cleanrawsrev <- cleanrawsrev %>% 
   separate(plate_id, into = c("garbage", "plate_id", "genotype"), sep ="/") %>%
   separate(genotype, into = c("genotype", "time"), sep = ":")  %>% 
-  separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") %>% 
-  select(genotype:dur_100th_percentile)
+  separate(genotype, into = c("genotype", "tracker"), sep = "s_") %>% 
+  separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") %>%
+  separate(tracker, into = c("tracker", "date"), sep = "0") %>%
+  select(plate_id:dur_100th_percentile)
+
+##Filtering to not include tracker C becuase it delivered faulty taps
+
+cleanrawsrev <- cleanrawsrev %>%
+  filter(!tracker == "C")
 
 ##Optional Code to rename your factors
 
@@ -1485,7 +1500,16 @@ rawsmorph <- read_table2("data.smorph", col_names = c("plate_id", "width", "leng
 
 cleanrawsmorph <- rawsmorph %>% 
   separate(plate_id, into = c("garbage", "plate_id", "genotype"), sep ="/") %>%
-  separate(genotype, into = c("genotype", "time"), sep = ":") %>% separate(genotype, into = c("genotype", "synch_conditions", "growth_conditions"), sep = "_") 
+  separate(genotype, into = c("genotype", "time"), sep = ":") %>% 
+  separate(genotype, into = c("genotype", "tracker"), sep = "s_") %>% 
+  separate(tracker, into = c("tracker", "date"), sep = "0") %>% 
+  separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") 
+   
+
+##Filtering not for tracker C becuase it delivered faulty taps
+
+cleanrawsmorph <- cleanrawsmorph %>% 
+  filter(!tracker == "C")
 
 ####Make time numeric and round time
 
@@ -1869,7 +1893,6 @@ cd ../..
 
 
 ```{r}
-##Baseline N2 vs nlg-1::AID::GFP test
 
 ##Read in summary of reversal data file (data.srev) 
 
@@ -1878,8 +1901,15 @@ cleanrawsrev <- read_table2("data.srev", col_names = c("plate_id", "already_rev"
 cleanrawsrev <- cleanrawsrev %>% 
   separate(plate_id, into = c("garbage", "plate_id", "genotype"), sep ="/") %>%
   separate(genotype, into = c("genotype", "time"), sep = ":")  %>% 
-  separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") %>% 
-  select(genotype:dur_100th_percentile)
+  separate(genotype, into = c("genotype", "tracker"), sep = "s_") %>% 
+  separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") %>%
+  separate(tracker, into = c("tracker", "date"), sep = "0") %>%
+  select(plate_id:dur_100th_percentile)
+
+##Filtering to not include tracker C becuase it delivered faulty taps
+
+cleanrawsrev <- cleanrawsrev %>%
+  filter(!tracker == "C")
 
 ##Optional Code to rename your factors
 
@@ -2297,7 +2327,17 @@ rawsmorph <- read_table2("data.smorph", col_names = c("plate_id", "width", "leng
 
 cleanrawsmorph <- rawsmorph %>% 
   separate(plate_id, into = c("garbage", "plate_id", "genotype"), sep ="/") %>%
-  separate(genotype, into = c("genotype", "time"), sep = ":") %>% separate(genotype, into = c("genotype", "synch_conditions", "growth_conditions"), sep = "_") 
+  separate(genotype, into = c("genotype", "time"), sep = ":") %>% 
+  separate(genotype, into = c("genotype", "tracker"), sep = "s_") %>% 
+  separate(tracker, into = c("tracker", "date"), sep = "0") %>% 
+  separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") 
+   
+
+##Filtering not for tracker C becuase it delivered faulty taps
+
+cleanrawsmorph <- cleanrawsmorph %>% 
+  filter(!tracker == "C")
+   
 
 ####Make time numeric and round time
 

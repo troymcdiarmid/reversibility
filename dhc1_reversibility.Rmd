@@ -47,8 +47,15 @@ cleanrawsrev <- read_table2("data.srev", col_names = c("plate_id", "already_rev"
 cleanrawsrev <- cleanrawsrev %>% 
   separate(plate_id, into = c("garbage", "plate_id", "genotype"), sep ="/") %>%
   separate(genotype, into = c("genotype", "time"), sep = ":")  %>% 
-  separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") %>% 
-  select(genotype:dur_100th_percentile) 
+  separate(genotype, into = c("genotype", "tracker"), sep = "s_") %>% 
+  separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") %>%
+  separate(tracker, into = c("tracker", "date"), sep = "0") %>%
+  select(plate_id:dur_100th_percentile)
+
+##Filtering to not include tracker C becuase it delivered faulty taps
+
+cleanrawsrev <- cleanrawsrev %>%
+  filter(!tracker == "C")
 
 
 ##Make time numeric and round time 
@@ -240,7 +247,16 @@ rawsmorph <- read_table2("data.smorph", col_names = c("plate_id", "width", "leng
 
 cleanrawsmorph <- rawsmorph %>% 
   separate(plate_id, into = c("garbage", "plate_id", "genotype"), sep ="/") %>%
-  separate(genotype, into = c("genotype", "time"), sep = ":") %>% separate(genotype, into = c("genotype", "synch_conditions", "growth_conditions"), sep = "_") 
+  separate(genotype, into = c("genotype", "time"), sep = ":") %>% 
+  separate(genotype, into = c("genotype", "tracker"), sep = "s_") %>% 
+  separate(tracker, into = c("tracker", "date"), sep = "0") %>% 
+  separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") 
+   
+
+##Filtering not for tracker C becuase it delivered faulty taps
+
+cleanrawsmorph <- cleanrawsmorph %>% 
+  filter(!tracker == "C")
 
 ####Make time numeric and round time
 
@@ -541,9 +557,15 @@ cleanrawsrev <- read_table2("data.srev", col_names = c("plate_id", "already_rev"
 cleanrawsrev <- cleanrawsrev %>% 
   separate(plate_id, into = c("garbage", "plate_id", "genotype"), sep ="/") %>%
   separate(genotype, into = c("genotype", "time"), sep = ":")  %>% 
-  separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") %>% 
-  select(genotype:dur_100th_percentile)
+  separate(genotype, into = c("genotype", "tracker"), sep = "s_") %>% 
+  separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") %>%
+  separate(tracker, into = c("tracker", "date"), sep = "0") %>%
+  select(plate_id:dur_100th_percentile)
 
+##Filtering to not include tracker C becuase it delivered faulty taps
+
+cleanrawsrev <- cleanrawsrev %>%
+  filter(!tracker == "C")
 
 ##Make time numeric and round time 
 
@@ -738,7 +760,17 @@ rawsmorph <- read_table2("data.smorph", col_names = c("plate_id", "width", "leng
 
 cleanrawsmorph <- rawsmorph %>% 
   separate(plate_id, into = c("garbage", "plate_id", "genotype"), sep ="/") %>%
-  separate(genotype, into = c("genotype", "time"), sep = ":") %>% separate(genotype, into = c("genotype", "synch_conditions", "growth_conditions"), sep = "_") 
+  separate(genotype, into = c("genotype", "time"), sep = ":") %>% 
+  separate(genotype, into = c("genotype", "tracker"), sep = "s_") %>% 
+  separate(tracker, into = c("tracker", "date"), sep = "0") %>% 
+  separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") 
+   
+
+##Filtering not for tracker C becuase it delivered faulty taps
+
+cleanrawsmorph <- cleanrawsmorph %>% 
+  filter(!tracker == "C")
+   
 
 ####Make time numeric and round time
 
@@ -1568,8 +1600,15 @@ rawsmorph <- read_table2("data.smorph", col_names = c("plate_id", "width", "leng
 
 cleanrawsmorph <- rawsmorph %>% 
   separate(plate_id, into = c("garbage", "plate_id", "genotype"), sep ="/") %>%
-  separate(genotype, into = c("genotype", "time"), sep = ":") %>% separate(genotype, into = c("genotype", "synch_conditions", "growth_conditions"), sep = "_") %>% 
-  separate(growth_conditions, into = c("growth_conditions", "tracker"), sep = "0") %>% 
+  separate(genotype, into = c("genotype", "time"), sep = ":") %>% 
+  separate(genotype, into = c("genotype", "tracker"), sep = "s_") %>% 
+  separate(tracker, into = c("tracker", "date"), sep = "1") %>% 
+  separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") 
+   
+
+##Filtering not for tracker C becuase it delivered faulty taps
+
+cleanrawsmorph <- cleanrawsmorph %>% 
   filter(!tracker == "C")
   
 
@@ -2086,46 +2125,46 @@ genotype_sds <- mean_cleanrawsmorph %>%
 
 pairwise.t.test(x = mean_cleanrawsmorph$length, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_cleanrawsmorph$width, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
-pairwise.t.test(x = mean_cleanrawsmorph$curve, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
-pairwise.t.test(x = mean_cleanrawsmorph$kink, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
-pairwise.t.test(x = mean_cleanrawsmorph$aspect, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
-pairwise.t.test(x = mean_cleanrawsmorph$angular, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_cleanrawsmorph$midline, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
-pairwise.t.test(x = mean_cleanrawsmorph$bias, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
-pairwise.t.test(x = mean_cleanrawsmorph$speed, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
-pairwise.t.test(x = mean_cleanrawsmorph$area, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_cleanrawsmorph$morphwidth, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
-pairwise.t.test(x = mean_cleanrawsmorph$crab, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH") 
+pairwise.t.test(x = mean_cleanrawsmorph$area, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_cleanrawsmorph$pathlen, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$bias, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_cleanrawsmorph$dir, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$angular, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$aspect, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$kink, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$crab, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH") 
+pairwise.t.test(x = mean_cleanrawsmorph$speed, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$curve, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
 
 ggplot(mean_cleanrawsmorph, aes(genotype, length, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
 ggplot(mean_cleanrawsmorph, aes(genotype, width, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, area, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, curve, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, kink, colour = genotype)) +
+ggplot(mean_cleanrawsmorph, aes(genotype, midline, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
 ggplot(mean_cleanrawsmorph, aes(genotype, morphwidth, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, dir, colour = genotype)) +
+ggplot(mean_cleanrawsmorph, aes(genotype, area, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
 ggplot(mean_cleanrawsmorph, aes(genotype, pathlen, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, midline, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
 ggplot(mean_cleanrawsmorph, aes(genotype, bias, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, aspect, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, speed, colour = genotype)) +
+ggplot(mean_cleanrawsmorph, aes(genotype, dir, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
 ggplot(mean_cleanrawsmorph, aes(genotype, angular, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, aspect, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, kink, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
 ggplot(mean_cleanrawsmorph, aes(genotype, crab, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, speed, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, curve, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25)
 
 ##Calculating significance for all sensory/learning metrics for dhc-1 heatmap 
@@ -2231,737 +2270,3 @@ ggplot(mean_all_revs, aes(genotype, rev_dist, colour = genotype)) +
 
 
 
-
-
-
-
-##RUN 2 - Analysis for L4 pan neuronal inactivation and rescue at 0.025mM 
-
-
-
-
-
-
-
-
-
-
-```{r setup, include=FALSE}
-##Bash loop to call choreography to output reversals from each tracker plate data file generated by the tracker
-
-for folder in $( ls ); do java -jar /Users/troymcdiarmid/Desktop/Chore.jar --segment --shadowless --pixelsize 0.027 --minimum-move-body 2 --minimum-time 20 --output width,length,morphwidth,curve,area,midline,pathlen,bias,dir,angular,aspect,kink,crab,speed --plugin Reoutline::despike --plugin Respine --plugin MeasureReversal::tap::dt=1::collect=0.5 $folder; done
-
-##Bash argument to grep all .trv choreography output files into a summary of reversals
-grep -H '[.]*' $(find . -name '*.rev') > data.srev
-cd ../..
-```
-
-
-```{r}
-##Baseline N2 vs dhc-1::AID::GFP test
-
-##Read in summary of reversal data fill (data.srev) 
-
-setwd("/Users/troymcdiarmid/Downloads/VG946_0.025mM_0128_2021/data")
-
-cleanrawsrev <- read_table2("data.srev", col_names = c("plate_id", "already_rev", "not_rev", "rev", "rev_dist", "dist_sd", "dist_sem", "dist_0_quart", "dist_1st_quart", "dist_2nd_quart", "dist_3rd_quart", "dsit_100th_percentile", "rev_dur", "dur_sd", "dur_sem", "dur_0_quart", "dur_1st_quart", "dur_2nd_quart", "dur_3rd_quart", "dur_100th_percentile"))
-cleanrawsrev <- cleanrawsrev %>% 
-  separate(plate_id, into = c("garbage", "plate_id", "genotype"), sep ="/") %>%
-  separate(genotype, into = c("genotype", "time"), sep = ":")  %>% 
-  separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") %>% 
-  select(genotype:dur_100th_percentile)
-
-
-##Make time numeric and round time 
-
-cleanrawsrev <- cleanrawsrev %>% mutate(time = as.numeric(time)) %>% 
-  mutate(time = round(time, digits = 0)) 
-
-##Calculate reversal probability
-
-cleanrawsrev <- cleanrawsrev %>% 
-  mutate(rev_prob = rev / (not_rev + rev)) 
-
-##optional code to remove any bad observtions
-
-cleanrawsrev <- cleanrawsrev %>% 
-  filter(!(rev_dist == "0")) 
-cleanrawsrev <- cleanrawsrev %>% 
-  filter(!(time == "809")) 
-cleanrawsrev <- cleanrawsrev %>% 
-  filter(!(time == "769")) 
-
-##Calculate reversal speed 
-
-cleanrawsrev <- cleanrawsrev %>%
-  mutate(rev_speed = rev_dist / rev_dur) 
-
-##Optional Code to rename your factors
-
-cleanrawsrev$genotype <- recode(cleanrawsrev$genotype, `CA1210A` = "CA1210A3d")
-
-##Reorder factors
-
-cleanrawsrev$genotype <- factor(cleanrawsrev$genotype,
-    levels = c('VG946N', 'VG946C', 'VG946D', 'VG946A', 'N2C', ordered = TRUE))
-
-##Mean rev data
-
-mean_cleanrawsrev <- cleanrawsrev %>% 
-  group_by(genotype, time) %>% 
-  summarize_all(mean) 
-
-##Add stim number NOTE: this must be changed to fit your experiment parameters 
-
-mean_cleanrawsrev$stimulus_num <- rep(1:31, times = 5) 
-
-##SD calcs
-
-prob_SD <- cleanrawsrev %>% 
-  group_by(genotype, time) %>% 
-  summarise(prob_sd = sd(rev_prob))
-dur_SD <- cleanrawsrev %>% 
-  group_by(genotype, time) %>% 
-  summarise(dur_sd = sd(rev_dur))
-speed_SD <- cleanrawsrev %>% 
-  group_by(genotype, time) %>% 
-  summarise(speed_sd = sd(rev_speed))
-dist_SD <- cleanrawsrev %>% 
-  group_by(genotype, time) %>% 
-  summarise(dist_sd = sd(rev_dist))
-
-##SEM calcs
-
-prob_SEM <- cleanrawsrev %>% 
-  group_by(genotype, time) %>% 
-  summarise(prob_sem = sd(rev_prob)/sqrt(length(rev_prob)))
-dur_SEM <- cleanrawsrev %>% 
-  group_by(genotype, time) %>% 
-  summarise(dur_sem = sd(rev_dur)/sqrt(length(rev_dur)))
-dist_SEM <- cleanrawsrev %>% 
-  group_by(genotype, time) %>% 
-  summarise(dist_sem = sd(rev_dist)/sqrt(length(rev_dist)))
-speed_SEM <- cleanrawsrev %>% 
-  group_by(genotype, time) %>% 
-  summarise(speed_sem = sd(rev_speed)/sqrt(length(rev_speed)))
-
-```
-
-
-```{r}
-
-##Habituation of dhc-1::AID::GFP L4 0.025mM pan neuronal degradation vs non treated
-
-mean_cleanrawsrev_filt <- mean_cleanrawsrev %>% 
-  filter(genotype %in% c("VG946N", "VG946C"))
-prob_SEM_filt <- prob_SEM %>% 
-  filter(genotype %in% c("VG946N", "VG946C"))
-ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_prob, colour = genotype)) +
-  theme_classic() + 
-  geom_line(size = 1) + 
-  geom_errorbar(aes(ymin=rev_prob-prob_SEM_filt$prob_sem, ymax=rev_prob+prob_SEM_filt$prob_sem), width = 0, size = 1) +
-  scale_y_continuous(expand = c(0,0),
-                     limits = c(0,1.00)) +
-  geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
-  scale_shape_manual(values=c(16,16,16)) +
-  scale_size_manual(values=c(4.25,4.25,4.25)) +
-  scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-  labs(title = "", x = "Stimulus number", y = "Reversal probability") +
-  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
-  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
-  theme(axis.ticks.length= unit(.25, "cm")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(legend.position="none") +
-  theme(plot.title = element_text(face = "bold", hjust = 0.5)) 
-  ggsave("dhc1_L4_pan_neur_AID_C_prob.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur/habituation")
-  
-#Plot of duration habituation
-  
-mean_cleanrawsrev_filt <- mean_cleanrawsrev %>% 
-  filter(genotype %in% c("VG946N", "VG946C"))
-dur_SEM_filt <- dur_SEM %>% 
-  filter(genotype %in% c("VG946N", "VG946C"))
-ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_dur, colour = genotype)) + 
-  geom_line(size = 1) +
-  theme_classic() + 
-  geom_errorbar(aes(ymin=rev_dur-dur_SEM_filt$dur_sem, ymax=rev_dur+dur_SEM_filt$dur_sem), width = 0, size = 1) +
-  scale_y_continuous(expand = c(0,0),
-                     limits = c(0,4)) +
-  geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
-  scale_shape_manual(values=c(16,16,16)) +
-  scale_size_manual(values=c(4.25,4.25,4.25)) +
-  scale_color_manual(values=c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-  labs(title = "", x = "Stimulus number", y = "Reversal duration (S)") +
-  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
-  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
-   theme(axis.ticks.length= unit(.25, "cm")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
-  theme(legend.position="none") +
-  ggsave("dhc1_L4_pan_neur_AID_C_dur.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur/habituation")
-
-##Plot speed habituation
-
-mean_cleanrawsrev_filt <- mean_cleanrawsrev %>% 
-  filter(genotype %in% c("VG946N", "VG946C"))
-speed_SEM_filt <- speed_SEM %>% 
-  filter(genotype %in% c("VG946N", "VG946C"))
-ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_speed, colour = genotype)) +
-  geom_line(size = 1) +
-  theme_classic() + 
-  geom_errorbar(aes(ymin=rev_speed-speed_SEM_filt$speed_sem, ymax=rev_speed+speed_SEM_filt$speed_sem), width = 0, size = 1) +
-  scale_y_continuous(expand = c(0,0),
-                     limits = c(0,0.5)) +
-  geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
-  scale_shape_manual(values=c(16,16,16)) +
-  scale_size_manual(values=c(4.25,4.25,4.25)) +
-  scale_color_manual(values=c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-  labs(title = "", x = "Stimulus number", y = "Reversal speed (mm/s)") +
-  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
-  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
-   theme(axis.ticks.length= unit(.25, "cm")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
-  theme(legend.position="none") +
-  ggsave("dhc1_L4_pan_neur_AID_C_speed.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur/habituation")
-  
-
-##Habituation of dhc-1::AID::GFP L4 0.025mM pan neuronal continous and developmental only degradation vs non treated
-
-mean_cleanrawsrev_filt <- mean_cleanrawsrev %>% 
-  filter(genotype %in% c("VG946N", "VG946C", "VG946D"))
-prob_SEM_filt <- prob_SEM %>% 
-  filter(genotype %in% c("VG946N", "VG946C", "VG946D"))
-ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_prob, colour = genotype)) +
-  theme_classic() + 
-  geom_line(size = 1) + 
-  geom_errorbar(aes(ymin=rev_prob-prob_SEM_filt$prob_sem, ymax=rev_prob+prob_SEM_filt$prob_sem), width = 0, size = 1) +
-  scale_y_continuous(expand = c(0,0),
-                     limits = c(0,1.00)) +
-  geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
-  scale_shape_manual(values=c(16,16,16)) +
-  scale_size_manual(values=c(4.25,4.25,4.25)) +
-  scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-  labs(title = "", x = "Stimulus number", y = "Reversal probability") +
-  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
-  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
-  theme(axis.ticks.length= unit(.25, "cm")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(legend.position="none") +
-  theme(plot.title = element_text(face = "bold", hjust = 0.5)) 
-  ggsave("dhc1_L4_pan_neur_AID_C_D_prob.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur/habituation")
-  
-#Plot of duration habituation
-  
-mean_cleanrawsrev_filt <- mean_cleanrawsrev %>% 
-  filter(genotype %in% c("VG946N", "VG946C", "VG946D"))
-dur_SEM_filt <- dur_SEM %>% 
-  filter(genotype %in% c("VG946N", "VG946C", "VG946D"))
-ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_dur, colour = genotype)) + 
-  geom_line(size = 1) +
-  theme_classic() + 
-  geom_errorbar(aes(ymin=rev_dur-dur_SEM_filt$dur_sem, ymax=rev_dur+dur_SEM_filt$dur_sem), width = 0, size = 1) +
-  scale_y_continuous(expand = c(0,0),
-                     limits = c(0,4)) +
-  geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
-  scale_shape_manual(values=c(16,16,16)) +
-  scale_size_manual(values=c(4.25,4.25,4.25)) +
-  scale_color_manual(values=c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-  labs(title = "", x = "Stimulus number", y = "Reversal duration (S)") +
-  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
-  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
-   theme(axis.ticks.length= unit(.25, "cm")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
-  theme(legend.position="none") +
-  ggsave("dhc1_L4_pan_neur_AID_C_D_dur.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur/habituation")
-
-##Plot speed habituation
-
-mean_cleanrawsrev_filt <- mean_cleanrawsrev %>% 
-  filter(genotype %in% c("VG946N", "VG946C", "VG946D"))
-speed_SEM_filt <- speed_SEM %>% 
-  filter(genotype %in% c("VG946N", "VG946C", "VG946D"))
-ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_speed, colour = genotype)) +
-  geom_line(size = 1) +
-  theme_classic() + 
-  geom_errorbar(aes(ymin=rev_speed-speed_SEM_filt$speed_sem, ymax=rev_speed+speed_SEM_filt$speed_sem), width = 0, size = 1) +
-  scale_y_continuous(expand = c(0,0),
-                     limits = c(0,0.5)) +
-  geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
-  scale_shape_manual(values=c(16,16,16)) +
-  scale_size_manual(values=c(4.25,4.25,4.25)) +
-  scale_color_manual(values=c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-  labs(title = "", x = "Stimulus number", y = "Reversal speed (mm/s)") +
-  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
-  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
-   theme(axis.ticks.length= unit(.25, "cm")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
-  theme(legend.position="none") +
-  ggsave("dhc1_L4_pan_neur_AID_C_D_speed.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur/habituation")
-
-##Habituation of dhc-1::AID::GFP L4 0.025mM pan neuronal continous and adult only degradation vs non treated
-
-mean_cleanrawsrev_filt <- mean_cleanrawsrev %>% 
-  filter(genotype %in% c("VG946N", "VG946C", "VG946A"))
-prob_SEM_filt <- prob_SEM %>% 
-  filter(genotype %in% c("VG946N", "VG946C", "VG946A"))
-ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_prob, colour = genotype)) +
-  theme_classic() + 
-  geom_line(size = 1) + 
-  geom_errorbar(aes(ymin=rev_prob-prob_SEM_filt$prob_sem, ymax=rev_prob+prob_SEM_filt$prob_sem), width = 0, size = 1) +
-  scale_y_continuous(expand = c(0,0),
-                     limits = c(0,1.00)) +
-  geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
-  scale_shape_manual(values=c(16,16,16)) +
-  scale_size_manual(values=c(4.25,4.25,4.25)) +
-  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44","gray39")) +
-  labs(title = "", x = "Stimulus number", y = "Reversal probability") +
-  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
-  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
-  theme(axis.ticks.length= unit(.25, "cm")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(legend.position="none") +
-  theme(plot.title = element_text(face = "bold", hjust = 0.5)) 
-  ggsave("dhc1_L4_pan_neur_AID_C_A_prob.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur/habituation")
-  
-#Plot of duration habituation
-  
-mean_cleanrawsrev_filt <- mean_cleanrawsrev %>% 
-  filter(genotype %in% c("VG946N", "VG946C", "VG946A"))
-dur_SEM_filt <- dur_SEM %>% 
-  filter(genotype %in% c("VG946N", "VG946C", "VG946A"))
-ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_dur, colour = genotype)) + 
-  geom_line(size = 1) +
-  theme_classic() + 
-  geom_errorbar(aes(ymin=rev_dur-dur_SEM_filt$dur_sem, ymax=rev_dur+dur_SEM_filt$dur_sem), width = 0, size = 1) +
-  scale_y_continuous(expand = c(0,0),
-                     limits = c(0,4)) +
-  geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
-  scale_shape_manual(values=c(16,16,16)) +
-  scale_size_manual(values=c(4.25,4.25,4.25)) +
-  scale_color_manual(values=c("black", "dodgerblue2", "#EDBD44","gray39")) +
-  labs(title = "", x = "Stimulus number", y = "Reversal duration (S)") +
-  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
-  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
-   theme(axis.ticks.length= unit(.25, "cm")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
-  theme(legend.position="none") +
-  ggsave("dhc1_L4_pan_neur_AID_C_A_dur.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur/habituation")
-
-##Plot speed habituation
-
-mean_cleanrawsrev_filt <- mean_cleanrawsrev %>% 
-  filter(genotype %in% c("VG946N", "VG946C", "VG946A"))
-speed_SEM_filt <- speed_SEM %>% 
-  filter(genotype %in% c("VG946N", "VG946C", "VG946A"))
-ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_speed, colour = genotype)) +
-  geom_line(size = 1) +
-  theme_classic() + 
-  geom_errorbar(aes(ymin=rev_speed-speed_SEM_filt$speed_sem, ymax=rev_speed+speed_SEM_filt$speed_sem), width = 0, size = 1) +
-  scale_y_continuous(expand = c(0,0),
-                     limits = c(0,0.5)) +
-  geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
-  scale_shape_manual(values=c(16,16,16)) +
-  scale_size_manual(values=c(4.25,4.25,4.25)) +
-  scale_color_manual(values=c("black", "dodgerblue2", "#EDBD44","gray39")) +
-  labs(title = "", x = "Stimulus number", y = "Reversal speed (mm/s)") +
-  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
-  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
-   theme(axis.ticks.length= unit(.25, "cm")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
-  theme(legend.position="none") +
-  ggsave("dhc1_L4_pan_neur_AID_C_A_speed.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur/habituation")
-
-##Habituation of dhc-1::AID::GFP L4 0.025mM pan neuronal continous, developmental degradation, and adult only degradation vs non treated
-
-mean_cleanrawsrev_filt <- mean_cleanrawsrev %>% 
-  filter(genotype %in% c("VG946N", "VG946C", "VG946A", "VG946D"))
-prob_SEM_filt <- prob_SEM %>% 
-  filter(genotype %in% c("VG946N", "VG946C", "VG946A", "VG946D"))
-ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_prob, colour = genotype)) +
-  theme_classic() + 
-  geom_line(size = 1) + 
-  geom_errorbar(aes(ymin=rev_prob-prob_SEM_filt$prob_sem, ymax=rev_prob+prob_SEM_filt$prob_sem), width = 0, size = 1) +
-  scale_y_continuous(expand = c(0,0),
-                     limits = c(0,1.00)) +
-  geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
-  scale_shape_manual(values=c(16,16,16,16)) +
-  scale_size_manual(values=c(4.25,4.25,4.25,4.25)) +
-  scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-  labs(title = "", x = "Stimulus number", y = "Reversal probability") +
-  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
-  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
-  theme(axis.ticks.length= unit(.25, "cm")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(legend.position="none") +
-  theme(plot.title = element_text(face = "bold", hjust = 0.5)) 
-  ggsave("dhc1_L4_pan_neur_AID_C_A_D_prob.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur/habituation")
-  
-#Plot of duration habituation
-  
-mean_cleanrawsrev_filt <- mean_cleanrawsrev %>% 
-  filter(genotype %in% c("VG946N", "VG946C", "VG946A", "VG946D"))
-dur_SEM_filt <- dur_SEM %>% 
-  filter(genotype %in% c("VG946N", "VG946C", "VG946A", "VG946D"))
-ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_dur, colour = genotype)) + 
-  geom_line(size = 1) +
-  theme_classic() + 
-  geom_errorbar(aes(ymin=rev_dur-dur_SEM_filt$dur_sem, ymax=rev_dur+dur_SEM_filt$dur_sem), width = 0, size = 1) +
-  scale_y_continuous(expand = c(0,0),
-                     limits = c(0,4)) +
-  geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
-  scale_shape_manual(values=c(16,16,16,16)) +
-  scale_size_manual(values=c(4.25,4.25,4.25,4.25)) +
-  scale_color_manual(values=c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-  labs(title = "", x = "Stimulus number", y = "Reversal duration (S)") +
-  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
-  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
-   theme(axis.ticks.length= unit(.25, "cm")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
-  theme(legend.position="none") +
-  ggsave("dhc1_L4_pan_neur_AID_C_A_D_dur.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur/habituation")
-
-##Plot speed habituation
-
-mean_cleanrawsrev_filt <- mean_cleanrawsrev %>% 
-  filter(genotype %in% c("VG946N", "VG946C", "VG946A", "VG946D"))
-speed_SEM_filt <- speed_SEM %>% 
-  filter(genotype %in% c("VG946N", "VG946C", "VG946A", "VG946D"))
-ggplot(mean_cleanrawsrev_filt, aes(stimulus_num, rev_speed, colour = genotype)) +
-  geom_line(size = 1) +
-  theme_classic() + 
-  geom_errorbar(aes(ymin=rev_speed-speed_SEM_filt$speed_sem, ymax=rev_speed+speed_SEM_filt$speed_sem), width = 0, size = 1) +
-  scale_y_continuous(expand = c(0,0),
-                     limits = c(0,0.5)) +
-  geom_point(aes(shape=genotype), size = 4.25, fill = "white", stroke = 1.25) +
-  scale_shape_manual(values=c(16,16,16,16)) +
-  scale_size_manual(values=c(4.25,4.25,4.25,4.25)) +
-  scale_color_manual(values=c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-  labs(title = "", x = "Stimulus number", y = "Reversal speed (mm/s)") +
-  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
-  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
-   theme(axis.ticks.length= unit(.25, "cm")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
-  theme(legend.position="none") +
-  ggsave("dhc1_L4_pan_neur_AID_C_A_D_speed.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur/habituation")
-  
-```
-
-
-
-```{r}
-
-##Basic morphology features analysis
-
-##Bash loop to output reversals and basic morphology from tracker plates (to be run in terminal)
-
-for folder in $( ls ); do java -jar /Users/troymcdiarmid/Desktop/Chore.jar --segment --shadowless --pixelsize 0.027 --minimum-move-body 2 --minimum-time 20 --output width,length,morphwidth,curve,area,midline,pathlen,bias,dir,angular,aspect,kink,crab,speed --plugin Reoutline::despike --plugin Respine --plugin MeasureReversal::tap::dt=1::collect=0.5 $folder; done
-
-##Bash argument to grep all .dat files into a summary of morphology (to be run in terminal)
-
-grep -H '[.]*' $(find . -name '*.dat') > data.smorph
-
-cd ../..
-
-```
-
-
-```{r}
-##The following code creates a dataframe with all morphology and baseline locomotion measures throughout the tracking session.
-
-##Comand to read .smorph file in 
-
-setwd("/Users/troymcdiarmid/Downloads/VG946_0.025mM_0128_2021/data")
-
-rawsmorph <- read_table2("data.smorph", col_names = c("plate_id", "width", "length", "morphwidth", "curve", "area", "midline", "pathlen", "bias", "dir", "angular", "aspect", "kink", "crab", "speed"))
-
-cleanrawsmorph <- rawsmorph %>% 
-  separate(plate_id, into = c("garbage", "plate_id", "genotype"), sep ="/") %>%
-  separate(genotype, into = c("genotype", "time"), sep = ":") %>% separate(genotype, into = c("genotype", "synch_conditions", "growth_conditions"), sep = "_") 
-
-####Make time numeric and round time
-
-cleanrawsmorph <- cleanrawsmorph %>% mutate(time = as.numeric(time)) %>% 
-  mutate(time = round(time, digits = 0)) 
-
-##Ordering the genotype factor for plotting
-    
-cleanrawsmorph$genotype <- factor(cleanrawsmorph$genotype,
-    levels = c('VG946N', 'VG946C', 'VG946D', 'VG946A', 'N2C', ordered = TRUE))
-
-##Filter for relevant groups
-
-cleanrawsmorph <- cleanrawsmorph %>% 
-    filter(genotype %in% c('VG946N', 'VG946C', 'VG946D', 'VG946A'))
-
-
-##Filtering to exclude first 10s when the tracker has yet to calculate conistent measurements for certain metrics.
-
-cleanrawsmorph <- cleanrawsmorph %>% 
-  filter(between(cleanrawsmorph$time, 10, 1199))
-
-
-```
-
-
-```{r}
-##Code to calculate mean of morphology metrics
-
-mean_cleanrawsmorph_whole_session <- cleanrawsmorph %>% 
-  select(genotype, time, width:speed) 
-
-mean_cleanrawsmorph_whole_session <- mean_cleanrawsmorph_whole_session %>%  
-  group_by(genotype, time) %>%
-  summarize_all(mean) 
-
-#Plots of morphology metrics for all groups
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, speed, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 0.3), breaks = c(0,0.1,0.2,0.3)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Speed (mm/s)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("dhc1_pan_neur_rev_speed_trace_l4.jpeg", width = 3.5, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur_run2/morphology")
-
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, curve, colour = genotype)) + 
-geom_line(size = 0.3) +
-  scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 50), breaks = c(0,10,20,30,40,50)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Curvature (radians)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("dhc1_pan_neur_curve_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur_run2/morphology")
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, kink, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0,100), breaks = c(0,25,50,75,100)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Kink (radians)", x = "Time (S)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("dhc1_pan_neur_rev_kink_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur_run2/morphology")
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, length, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 1.25), breaks = c(0,0.25,0.5,0.75,1.0,1.25)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Length (mm)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("dhc1_pan_neur_rev_Length_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur_run2/morphology")
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, midline, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0.0, 1.5), breaks = c(0.0,0.25,0.5,0.75,1.00,1.25,1.5)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Midline length (mm)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("dhc1_pan_neur_rev_midline_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur_run2/morphology")
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, width, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 0.5), breaks = c(0.0,0.1,0.2,0.3,0.4,0.5)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Width (mm)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("dhc1_pan_neur_rev_width_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur_run2/morphology")
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, pathlen, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 25), breaks = c(0,5,10,15,20,25)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Pathlength (mm)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("dhc1_pan_neur_rev_pathlength_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur_run2/morphology")
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, bias, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(-1, 1), breaks = c(-1.0,-0.5,0,0.5,1.0)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Direction bias", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("dhc1_pan_neur_rev_bias_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur_run2/morphology")
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, dir, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 0.06), breaks = c(0,0.02,0.04,0.06)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Direction change", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("dhc1_pan_neur_rev_dir_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur_run2/morphology")
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, crab, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 0.06), breaks = c(0,0.02,0.04,0.06)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Horizontal speed (mm/s)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("dhc1_pan_neur_rev_crab_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur_run2/morphology")
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, aspect, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0.0, 0.6), breaks = c(0,0.2,0.4,0.6)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Aspect (width to length ratio)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("dhc1_pan_neur_rev_aspect_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur_run2/morphology")
-
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, angular, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 30), breaks = c(0,10,20,30)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Angular speed (radians/second)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("dhc1_pan_neur_rev_angular_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/dhc1/L4_pan_neur_run2/morphology")
-
-```
