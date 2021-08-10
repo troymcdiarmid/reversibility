@@ -67,7 +67,7 @@ ggplot(data = pheno_counts_unc3) +
   theme(axis.title.y = element_text(family="Arial Bold", colour = "black", size = 30)) +
   scale_fill_manual(values=c("#76b6f4", "#d1e6fb", "dodgerblue2", "#0b355f", "gray39", "black")) 
 
-ggsave("ASD_Reverse_Pheno_counts_unc3.jpeg", width = 3.5, height = 12, path = "/Users/troymcdiarmid/Desktop/")
+ggsave("ASD_Reverse_Pheno_counts_unc3.jpeg", width = 5, height = 12, path = "/Users/troymcdiarmid/Desktop/")
 
 pheno_counts_dhc1 <- pheno_counts %>% 
   filter(Genotype == "dhc1")
@@ -92,7 +92,7 @@ ggplot(data = pheno_counts_dhc1) +
   theme(axis.title.y = element_text(family="Arial Bold", colour = "black", size = 30)) +
   scale_fill_manual(values=c("#76b6f4", "#d1e6fb", "dodgerblue2", "#0b355f", "gray39", "black")) 
 
-ggsave("ASD_Reverse_Pheno_counts_dhc1.jpeg", width = 3.5, height = 12, path = "/Users/troymcdiarmid/Desktop/")
+ggsave("ASD_Reverse_Pheno_counts_dhc1.jpeg", width = 5, height = 12, path = "/Users/troymcdiarmid/Desktop/")
 
 pheno_counts_unc86 <- pheno_counts %>% 
   filter(Genotype == "unc86")
@@ -101,7 +101,7 @@ ggplot(data = pheno_counts_unc86) +
   geom_bar(aes(x = Condition, y = count, fill = feature_class), stat = "identity") +
   theme_classic() +
   scale_y_continuous(position = "right") +
-  ylim(0,15) +
+  ylim(0,25) +
   labs(y = "", x = "") +
   theme(legend.title= element_text(family="Arial Bold")) +
   theme(legend.text= element_text(family="Arial Bold")) +
@@ -117,7 +117,7 @@ ggplot(data = pheno_counts_unc86) +
   theme(axis.title.y = element_text(family="Arial Bold", colour = "black", size = 30)) +
   scale_fill_manual(values=c("#76b6f4", "#d1e6fb", "dodgerblue2", "#0b355f", "gray39", "black")) 
 
-ggsave("ASD_Reverse_Pheno_counts_unc86.jpeg", width = 3.5, height = 12, path = "/Users/troymcdiarmid/Desktop/")
+ggsave("ASD_Reverse_Pheno_counts_unc86.jpeg", width = 5, height = 12, path = "/Users/troymcdiarmid/Desktop/")
 
 
 pheno_counts_unc86 <- pheno_counts %>% 
@@ -143,7 +143,7 @@ ggplot(data = pheno_counts_unc86) +
   theme(axis.title.y = element_text(family="Arial Bold", colour = "black", size = 30)) +
   scale_fill_manual(values=c("#76b6f4", "#d1e6fb", "dodgerblue2", "#0b355f", "gray39", "black")) 
 
-ggsave("ASD_Reverse_Pheno_counts_nlg1.jpeg", width = 3.5, height = 12, path = "/Users/troymcdiarmid/Desktop/")
+ggsave("ASD_Reverse_Pheno_counts_nlg1.jpeg", width = 5, height = 12, path = "/Users/troymcdiarmid/Desktop/")
 
 
 ```
@@ -175,11 +175,11 @@ upset(combined_phenos_C_transpose, order.by = "degree", decreasing = c(F), empty
 ggsave("continous_upset_0516_2021.jpeg", path = "/Users/troymcdiarmid/Desktop/")
 
 
-##Filterning for developmental degradation/rescue groups
+##Filterning for 2d developmental degradation/l4 rescue groups
 
 combined_phenos_D <- as.data.frame(combined_phenos) %>% 
   select(-Genotype) %>% 
-  filter(Condition %in% c("unc3D", "dhc1D", "unc86D"))
+  filter(Condition %in% c("unc3Dl4", "dhc1Dl4", "unc86Dl4"))
   
 
 rownames(combined_phenos_D) <- combined_phenos_D$Condition
@@ -191,6 +191,25 @@ combined_phenos_D_transpose <- as.data.frame(t(as.matrix(combined_phenos_D)))
 upset(combined_phenos_D_transpose, order.by = "degree", decreasing = c(F), empty.intersections = "on")
 
 ggsave("reverse_upset_0516_2021.jpeg", path = "/Users/troymcdiarmid/Desktop/")
+
+
+##Filterning for 2d developmental degradation/l4 rescue groups
+
+combined_phenos_D <- as.data.frame(combined_phenos) %>% 
+  select(-Genotype) %>% 
+  filter(Condition %in% c("unc3D1", "dhc1D1", "unc86D1"))
+  
+
+rownames(combined_phenos_D) <- combined_phenos_D$Condition
+combined_phenos_D$Condition <- NULL
+
+
+combined_phenos_D_transpose <- as.data.frame(t(as.matrix(combined_phenos_D)))
+
+upset(combined_phenos_D_transpose, order.by = "degree", decreasing = c(F), empty.intersections = "on")
+
+ggsave("reverse_upset_0516_2021.jpeg", path = "/Users/troymcdiarmid/Desktop/")
+
 
 ```
 

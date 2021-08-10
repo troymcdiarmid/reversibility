@@ -1053,14 +1053,14 @@ cd ../..
 
 ##Read in summary of reversal data fill (data.srev) 
 
-setwd("/Users/troymcdiarmid/Downloads/VG937_1day_0212_2021/data")
+setwd("/Volumes/SAMWISE/Troy/reversibility/unc_86/VG937_1day_0212_2021/data")
 cleanrawsrev <- read_table2("data.srev", col_names = c("plate_id", "already_rev", "not_rev", "rev", "rev_dist", "dist_sd", "dist_sem", "dist_0_quart", "dist_1st_quart", "dist_2nd_quart", "dist_3rd_quart", "dsit_100th_percentile", "rev_dur", "dur_sd", "dur_sem", "dur_0_quart", "dur_1st_quart", "dur_2nd_quart", "dur_3rd_quart", "dur_100th_percentile"))
 cleanrawsrev <- cleanrawsrev %>% 
   separate(plate_id, into = c("garbage", "plate_id", "genotype"), sep ="/") %>%
   separate(genotype, into = c("genotype", "time"), sep = ":")  %>% 
   separate(genotype, into = c("genotype", "tracker"), sep = "s_") %>% 
   separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") %>%
-  separate(tracker, into = c("tracker", "date"), sep = "1") %>%
+  separate(tracker, into = c("tracker", "date"), sep = "0") %>%
   select(plate_id:dur_100th_percentile)
 
 ##Filtering to not include tracker C becuase it delivered faulty taps
@@ -1582,7 +1582,7 @@ cd ../..
 
 ##Comand to read .smorph file in 
 
-setwd("/Users/troymcdiarmid/Downloads/VG937_1day_0212_2021/data")
+setwd("/Volumes/SAMWISE/Troy/reversibility/unc_86/VG937_1day_0212_2021/data")
 
 rawsmorph <- read_table2("data.smorph", col_names = c("plate_id", "width", "length", "morphwidth", "curve", "area", "midline", "pathlen", "bias", "dir", "angular", "aspect", "kink", "crab", "speed"))
 
@@ -1590,7 +1590,7 @@ cleanrawsmorph <- rawsmorph %>%
   separate(plate_id, into = c("garbage", "plate_id", "genotype"), sep ="/") %>%
   separate(genotype, into = c("genotype", "time"), sep = ":") %>% 
   separate(genotype, into = c("genotype", "tracker"), sep = "s_") %>% 
-  separate(tracker, into = c("tracker", "date"), sep = "1") %>% 
+  separate(tracker, into = c("tracker", "date"), sep = "0") %>% 
   separate(genotype, into = c("genotype", "growth_conditions"), sep = "_") 
    
 
@@ -1624,235 +1624,176 @@ cleanrawsmorph <- cleanrawsmorph %>%
 ```
 
 
+
+
 ```{r}
-##Code to calculate mean of morphology metrics
 
-mean_cleanrawsmorph_whole_session <- cleanrawsmorph %>% 
-  select(genotype, time, width:speed) 
+##Calculating significance accross all morphology metrics for dhc-1 heatmap
 
-mean_cleanrawsmorph_whole_session <- mean_cleanrawsmorph_whole_session %>%  
-  group_by(genotype, time) %>%
+
+##Code to calculate mean of morphology metrics accross plates
+
+cleanrawsmorph_baseline <- cleanrawsmorph %>% 
+  filter(between(cleanrawsmorph$time, 300, 599))
+
+mean_cleanrawsmorph <- cleanrawsmorph_baseline %>% 
+  dplyr::select(genotype, plate_id, width:speed) 
+
+mean_cleanrawsmorph <- mean_cleanrawsmorph %>%  
+  group_by(genotype, plate_id) %>%
   summarize_all(mean) 
 
-#Plots of morphology metrics for all groups
+##Calculating absolute means and Sds across genomes 
 
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, speed, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 0.3), breaks = c(0,0.1,0.2,0.3)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Speed (mm/s)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc86_rev_speed_trace_l4.jpeg", width = 3.5, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc86/1d_rev_run2/morphology")
+genotype_means <- mean_cleanrawsmorph %>% 
+  summarise_all(mean) 
 
+genotype_sds <- mean_cleanrawsmorph %>% 
+  summarise_all(sd) 
 
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, curve, colour = genotype)) + 
-geom_line(size = 0.3) +
-  scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 50), breaks = c(0,10,20,30,40,50)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Curvature (radians)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc86_rev_curve_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc86/1d_rev_run2/morphology")
+##Calculating stats
 
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, kink, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0,100), breaks = c(0,25,50,75,100)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Kink (radians)", x = "Time (S)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc86_rev_kink_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc86/1d_rev_run2/morphology")
+pairwise.t.test(x = mean_cleanrawsmorph$length, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$width, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$midline, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$morphwidth, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$area, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$pathlen, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$bias, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$dir, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$angular, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$aspect, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$kink, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$crab, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH") 
+pairwise.t.test(x = mean_cleanrawsmorph$speed, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_cleanrawsmorph$curve, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
 
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, length, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 1.25), breaks = c(0,0.25,0.5,0.75,1.0,1.25)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Length (mm)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc86_rev_Length_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc86/1d_rev_run2/morphology")
+ggplot(mean_cleanrawsmorph, aes(genotype, length, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, width, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, midline, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, morphwidth, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, area, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, pathlen, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, bias, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, dir, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, angular, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, aspect, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, kink, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, crab, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, speed, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_cleanrawsmorph, aes(genotype, curve, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
 
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, midline, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0.0, 1.5), breaks = c(0.0,0.25,0.5,0.75,1.00,1.25,1.5)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Midline length (mm)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc86_rev_midline_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc86/1d_rev_run2/morphology")
+##Calculating significance for all sensory/learning metrics for dhc-1 heatmap 
 
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, width, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 0.5), breaks = c(0.0,0.1,0.2,0.3,0.4,0.5)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Width (mm)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc86_rev_width_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc86/1d_rev_run2/morphology")
+Initial_revs <- cleanrawsrev %>%
+  filter(time %in% c(600)) %>% 
+  filter(genotype %in% c('VG937N', 'VG937C25', 'VG937D', 'VG937A'))
 
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, pathlen, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 25), breaks = c(0,5,10,15,20,25)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Pathlength (mm)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc86_rev_pathlength_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc86/1d_rev_run2/morphology")
+mean_initial_revs <- Initial_revs %>% 
+  group_by(genotype, plate_id) %>%
+  summarize_all(mean) 
+  
 
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, bias, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(-1, 1), breaks = c(-1.0,-0.5,0,0.5,1.0)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Direction bias", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc86_rev_bias_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc86/1d_rev_run2/morphology")
+pairwise.t.test(x = mean_initial_revs$rev_prob, g = mean_initial_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_initial_revs$rev_dur, g = mean_initial_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_initial_revs$rev_dist, g = mean_initial_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_initial_revs$rev_speed, g = mean_initial_revs$genotype, p.adjust.method = "BH")
 
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, dir, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 0.06), breaks = c(0,0.02,0.04,0.06)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Direction change", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc86_rev_dir_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc86/1d_rev_run2/morphology")
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, crab, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 0.06), breaks = c(0,0.02,0.04,0.06)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Horizontal speed (mm/s)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc86_rev_crab_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc86/1d_rev_run2/morphology")
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, aspect, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0.0, 0.6), breaks = c(0,0.2,0.4,0.6)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Aspect (width to length ratio)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc86_rev_aspect_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc86/1d_rev_run2/morphology")
+ggplot(mean_initial_revs, aes(genotype, rev_prob, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_initial_revs, aes(genotype, rev_dur, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_initial_revs, aes(genotype, rev_speed, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_initial_revs, aes(genotype, rev_dist, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
 
 
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, angular, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 30), breaks = c(0,10,20,30)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Angular speed (radians/second)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc86_rev_angular_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc86/1d_rev_run2/morphology")
+Final_revs <- cleanrawsrev %>%
+  filter(time %in% c(870:890)) %>% 
+  filter(genotype %in% c('VG937N', 'VG937C25', 'VG937D', 'VG937A'))
+
+mean_final_revs <- Final_revs %>%  
+  group_by(genotype, plate_id) %>%
+  summarize_all(mean) 
+
+
+pairwise.t.test(x = mean_final_revs$rev_prob, g = mean_final_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_final_revs$rev_dur, g = mean_final_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_final_revs$rev_speed, g = mean_final_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_final_revs$rev_dist, g = mean_final_revs$genotype, p.adjust.method = "BH")
+
+ggplot(mean_final_revs, aes(genotype, rev_prob, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_final_revs, aes(genotype, rev_dur, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_final_revs, aes(genotype, rev_speed, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_final_revs, aes(genotype, rev_dist, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+
+
+
+Spont_revs <- cleanrawsrev %>%
+  filter(time %in% c(1190)) %>% 
+  filter(genotype %in% c('VG937N', 'VG937C25', 'VG937D', 'VG937A'))
+
+mean_spont_revs <- Spont_revs %>%  
+  group_by(genotype, plate_id) %>%
+  summarize_all(mean) 
+
+
+pairwise.t.test(x = mean_spont_revs$rev_prob, g = mean_spont_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_spont_revs$rev_dur, g = mean_spont_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_spont_revs$rev_dist, g = mean_spont_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_spont_revs$rev_speed, g = mean_spont_revs$genotype, p.adjust.method = "BH")
+
+
+ggplot(mean_spont_revs, aes(genotype, rev_prob, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_spont_revs, aes(genotype, rev_dur, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_spont_revs, aes(genotype, rev_speed, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_spont_revs, aes(genotype, rev_dist, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+
+
+all_revs <- cleanrawsrev %>%
+  filter(genotype %in% c('VG937N', 'VG937C25', 'VG937D', 'VG937A')) 
+
+mean_all_revs <- all_revs %>% 
+  group_by(genotype, plate_id) %>%
+  summarize_all(mean) 
+
+pairwise.t.test(x = mean_all_revs$rev_prob, g = mean_all_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_all_revs$rev_speed, g = mean_all_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_all_revs$rev_dur, g = mean_all_revs$genotype, p.adjust.method = "BH")
+pairwise.t.test(x = mean_all_revs$rev_dist, g = mean_all_revs$genotype, p.adjust.method = "BH")
+
+ggplot(mean_all_revs, aes(genotype, rev_prob, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_all_revs, aes(genotype, rev_dur, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_all_revs, aes(genotype, rev_speed, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+ggplot(mean_all_revs, aes(genotype, rev_dist, colour = genotype)) +
+  geom_jitter(size = 1, width = 0.25)
+
 
 ```
 

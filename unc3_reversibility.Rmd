@@ -510,249 +510,15 @@ cleanrawsmorph <- cleanrawsmorph %>%
 ```
 
 
-```{r}
-##Code to calculate mean of morphology metrics
-
-mean_cleanrawsmorph_whole_session <- cleanrawsmorph %>% 
-  select(genotype, time, width:speed) 
-
-mean_cleanrawsmorph_whole_session <- mean_cleanrawsmorph_whole_session %>%  
-  group_by(genotype, time) %>%
-  summarize_all(mean) 
-
-
-#Plots of morphology metrics for all groups
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, speed, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 0.3), breaks = c(0,0.1,0.2,0.3)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Speed (mm/s)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc3_rev_speed_trace_l4.jpeg", width = 3.5, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L4_recovery/morphology/")
-
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, curve, colour = genotype)) + 
-geom_line(size = 0.3) +
-  scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 40), breaks = c(0,10,20,30,40)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Curvature (radians)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc3_rev_curve_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L4_recovery/morphology/")
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, kink, colour = genotype)) + 
-geom_line(size = 1) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0,100), breaks = c(0,25,50,75,100)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Kink (radians)", x = "Time (S)") +
-  theme(legend.position = "none") +
-  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
-  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
-  theme(axis.ticks.length= unit(.25, "cm")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(plot.margin = margin(15, 15, 15, 15)) +
-ggsave("unc3_rev_kink_trace_l4.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L4_recovery/morphology/")
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, length, colour = genotype)) + 
-geom_line(size = 1) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 1.25), breaks = c(0,0.25,0.5,0.75,1.0,1.25)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Length (mm)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line = element_line(colour = 'black', size = 2.25)) +
-  theme(axis.ticks = element_line(colour = "black", size = 2.25)) +
-  theme(axis.ticks.length= unit(.25, "cm")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.x = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(axis.title.y = element_text(family="Arial", colour = "black", size = 30)) +
-  theme(plot.margin = margin(15, 15, 15, 15)) +
-ggsave("unc3_rev_Length_trace_l4.jpeg", width = 7, height = 6, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L4_recovery/morphology/")
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, midline, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0.0, 1.25), breaks = c(0.0,0.25,0.5,0.75,1.00,1.25)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Midline length (mm)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc3_rev_midline_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L4_recovery/morphology/")
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, width, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 0.4), breaks = c(0.0,0.1,0.2,0.3,0.4)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Width (mm)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc3_rev_width_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L4_recovery/morphology/")
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, pathlen, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 25), breaks = c(0,5,10,15,20,25)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Pathlength (mm)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc3_rev_pathlength_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L4_recovery/morphology/")
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, bias, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(-1, 1), breaks = c(-1.0,-0.5,0,0.5,1.0)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Direction bias", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc3_rev_bias_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L4_recovery/morphology/")
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, dir, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 0.06), breaks = c(0,0.02,0.04,0.06)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Direction change", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc3_rev_dir_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L4_recovery/morphology/")
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, crab, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 0.06), breaks = c(0,0.02,0.04,0.06)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Horizontal speed (mm/s)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc3_rev_crab_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L4_recovery/morphology/")
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, aspect, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0.0, 0.6), breaks = c(0,0.2,0.4,0.6)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Aspect (width to length ratio)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc3_rev_aspect_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L4_recovery/morphology/")
-
-
-ggplot(mean_cleanrawsmorph_whole_session, aes(time, angular, colour = genotype)) + 
-geom_line(size = 0.3) +
-   scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-    scale_y_continuous(expand = c(0,0),
-                     limits = c(0, 30), breaks = c(0,10,20,30)) +
-  scale_x_continuous(expand = c(0,0),
-                     limits = c(0, 1260), breaks = c(0,300,600,900,1200)) +
-  theme_classic() +
-  labs(y = "Angular speed (radians/second)", x = "Time (s)") +
-  theme(legend.position = "none") +
-  theme(axis.line.y = element_line(colour = 'black', size = 0.4)) + 
-  theme(axis.line.x = element_line(colour = 'black', size = 0.4)) +
-  theme(axis.ticks.y = element_line(colour = "black", size = 0.4)) +
-  theme(axis.ticks.length=unit(.03, "in")) +
-  theme(axis.text = element_text(family="Arial", colour = "black", size = 12)) +
-  theme(axis.title = element_text(family="Arial", colour = "black", size = 12)) +
-ggsave("unc3_rev_angular_trace_l4.jpeg", width = 3, height = 2.5, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/L4_recovery/morphology/")
-
-
-
-```
-
 
 ```{r}
 
 ##Direct comparison supplemental figures
 
 ##Code to remove all 0 measurement entries and focus on the baseline period (300-599 seconds) which occurs after the worms have acclimated to the tracker but prior to the delivery of mechanosensory stimuli 
+
+cleanrawsmorph$genotype <- factor(cleanrawsmorph$genotype,
+    levels = c('OH13988N', 'OH13988C', 'OH13988A', 'OH13988D', ordered = TRUE))
 
 cleanrawsmorph_baseline <- cleanrawsmorph %>% 
   filter(between(cleanrawsmorph$time, 300, 599))
@@ -781,8 +547,8 @@ ggplot(mean_cleanrawsmorph, aes(genotype, length, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25) +
   geom_errorbar(data = genotype_means, aes(ymin=length-genotype_sds$length, ymax=length+genotype_sds$length), width = 0, size = 0.4, colour = "black") +
   geom_point(data =  genotype_means, aes(genotype, length, fill = genotype), colour = "black", shape = 21) +
-  scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-  scale_fill_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
   scale_y_continuous(expand = c(0,0),
                      limits = c(0.5,1.25), breaks = c(0.5,0.75,1.0,1.25)) +
   theme_classic() +
@@ -799,18 +565,6 @@ ggplot(mean_cleanrawsmorph, aes(genotype, length, colour = genotype)) +
   theme(axis.title = element_text(family="Arial", colour = "black", size = 11)) +
 ggsave("unc3_L4_length_dot_mean.jpeg", width = 2.1, height = 2.3, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
 
-##Fit a linear model and estimate signficance of group differences with adjusted p-values. 
-
-fit <- summary(lm(kink~genotype, mean_cleanrawsmorph))
-
-tidy_fit <- tidy(fit)  
-
-qvals <- p.adjust(tidy_fit$p.value, "BH")
-
-tidy_fit$q.vals <- qvals
-
-pairwise.t.test(x = mean_cleanrawsmorph$length, g = mean_cleanrawsmorph$genotype, p.adjust.method = "bonf")
-
 
 ##Plotting kink
 
@@ -818,8 +572,8 @@ ggplot(mean_cleanrawsmorph, aes(genotype, kink, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25) +
   geom_errorbar(data = genotype_means, aes(ymin=kink-genotype_sds$kink, ymax=kink+genotype_sds$kink), width = 0, size = 0.5, colour = "black") +
   geom_point(data =  genotype_means, aes(genotype, kink, fill = genotype), colour = "black", shape = 21) +
-  scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-  scale_fill_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
   scale_y_continuous(expand = c(0,0),
                      limits = c(25,100), breaks = c(25,50,75,100)) +
   theme_classic() +
@@ -836,18 +590,6 @@ ggplot(mean_cleanrawsmorph, aes(genotype, kink, colour = genotype)) +
   theme(axis.title = element_text(family="Arial", colour = "black", size = 11)) +
 ggsave("unc3_L4_kink_dot_mean.jpeg", width = 2.1, height = 2.3, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
 
-
-##Fit a linear model and estimate signficance of group differences with adjusted p-values. 
-
-fit <- summary(lm(kink~genotype, mean_cleanrawsmorph))
-
-tidy_fit <- tidy(fit)  
-
-qvals <- p.adjust(tidy_fit$p.value, "BH")
-
-tidy_fit$q.vals <- qvals
-
-pairwise.t.test(x = mean_cleanrawsmorph$kink, g = mean_cleanrawsmorph$genotype, p.adjust.method = "bonf")
 
 ```
 
@@ -898,34 +640,273 @@ pairwise.t.test(x = mean_cleanrawsmorph$crab, g = mean_cleanrawsmorph$genotype, 
 pairwise.t.test(x = mean_cleanrawsmorph$speed, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_cleanrawsmorph$curve, g = mean_cleanrawsmorph$genotype, p.adjust.method = "BH")
 
+##Tiny supp graphs
+
 ggplot(mean_cleanrawsmorph, aes(genotype, length, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=length-genotype_sds$length, ymax=length+genotype_sds$length), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, length, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_length_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
 ggplot(mean_cleanrawsmorph, aes(genotype, width, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=width-genotype_sds$width, ymax=width+genotype_sds$width), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, width, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_width_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
 ggplot(mean_cleanrawsmorph, aes(genotype, midline, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, morphwidth, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=midline-genotype_sds$midline, ymax=midline+genotype_sds$midline), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, midline, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_midline_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
 ggplot(mean_cleanrawsmorph, aes(genotype, area, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, pathlen, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, bias, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, dir, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, angular, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, aspect, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, kink, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, crab, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
-ggplot(mean_cleanrawsmorph, aes(genotype, speed, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=area-genotype_sds$area, ymax=area+genotype_sds$area), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, area, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_area_mni_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
+ggplot(mean_cleanrawsmorph, aes(genotype, morphwidth, colour = genotype)) +
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=morphwidth-genotype_sds$morphwidth, ymax=morphwidth+genotype_sds$morphwidth), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, morphwidth, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_morphwidth_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
 ggplot(mean_cleanrawsmorph, aes(genotype, curve, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=curve-genotype_sds$curve, ymax=curve+genotype_sds$curve), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, curve, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.1)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_curve_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
+ggplot(mean_cleanrawsmorph, aes(genotype, kink, colour = genotype)) +
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=kink-genotype_sds$kink, ymax=kink+genotype_sds$kink), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, kink, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.1)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_kink_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
+ggplot(mean_cleanrawsmorph, aes(genotype, pathlen, colour = genotype)) +
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=pathlen-genotype_sds$pathlen, ymax=pathlen+genotype_sds$pathlen), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, pathlen, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.1)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_pathlen_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
+ggplot(mean_cleanrawsmorph, aes(genotype, dir, colour = genotype)) +
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=dir-genotype_sds$dir, ymax=dir+genotype_sds$dir), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, dir, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_dir_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
+ggplot(mean_cleanrawsmorph, aes(genotype, bias, colour = genotype)) +
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=bias-genotype_sds$bias, ymax=bias+genotype_sds$bias), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, bias, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_bias_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
+ggplot(mean_cleanrawsmorph, aes(genotype, angular, colour = genotype)) +
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=angular-genotype_sds$angular, ymax=angular+genotype_sds$angular), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, angular, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_angular_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
+
+ggplot(mean_cleanrawsmorph, aes(genotype, aspect, colour = genotype)) +
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=aspect-genotype_sds$aspect, ymax=aspect+genotype_sds$aspect), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, aspect, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_aspect_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
+ggplot(mean_cleanrawsmorph, aes(genotype, speed, colour = genotype)) +
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=speed-genotype_sds$speed, ymax=speed+genotype_sds$speed), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, speed, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_speed_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
+ggplot(mean_cleanrawsmorph, aes(genotype, crab, colour = genotype)) +
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=crab-genotype_sds$crab, ymax=crab+genotype_sds$crab), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, crab, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_crab_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
 
 ##Calculating significance for all sensory/learning metrics for dhc-1 heatmap 
 
@@ -936,21 +917,94 @@ Initial_revs <- cleanrawsrev %>%
 mean_initial_revs <- Initial_revs %>% 
   group_by(genotype, plate_id) %>%
   summarize_all(mean) 
-  
+
+genotype_means <- mean_initial_revs %>% 
+  summarise_all(mean) 
+
+genotype_sds <- mean_initial_revs %>% 
+  summarise_all(sd) 
 
 pairwise.t.test(x = mean_initial_revs$rev_prob, g = mean_initial_revs$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_initial_revs$rev_dur, g = mean_initial_revs$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_initial_revs$rev_dist, g = mean_initial_revs$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_initial_revs$rev_speed, g = mean_initial_revs$genotype, p.adjust.method = "BH")
 
+
 ggplot(mean_initial_revs, aes(genotype, rev_prob, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=rev_prob-genotype_sds$rev_prob, ymax=rev_prob+genotype_sds$rev_prob), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, rev_prob, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_rev_initprob_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
 ggplot(mean_initial_revs, aes(genotype, rev_dur, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=rev_dur-genotype_sds$rev_dur, ymax=rev_dur+genotype_sds$rev_dur), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, rev_dur, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_rev_initdur_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
 ggplot(mean_initial_revs, aes(genotype, rev_speed, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=rev_speed-genotype_sds$rev_speed, ymax=rev_speed+genotype_sds$rev_speed), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, rev_speed, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_rev_initspeed_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
 ggplot(mean_initial_revs, aes(genotype, rev_dist, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=rev_dist-genotype_sds$rev_dist, ymax=rev_dist+genotype_sds$rev_dist), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, rev_dist, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_rev_initdist_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
 
 
 Final_revs <- cleanrawsrev %>%
@@ -961,6 +1015,11 @@ mean_final_revs <- Final_revs %>%
   group_by(genotype, plate_id) %>%
   summarize_all(mean) 
 
+genotype_means <- mean_final_revs %>% 
+  summarise_all(mean) 
+
+genotype_sds <- mean_final_revs %>% 
+  summarise_all(sd) 
 
 pairwise.t.test(x = mean_final_revs$rev_prob, g = mean_final_revs$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_final_revs$rev_dur, g = mean_final_revs$genotype, p.adjust.method = "BH")
@@ -968,13 +1027,80 @@ pairwise.t.test(x = mean_final_revs$rev_speed, g = mean_final_revs$genotype, p.a
 pairwise.t.test(x = mean_final_revs$rev_dist, g = mean_final_revs$genotype, p.adjust.method = "BH")
 
 ggplot(mean_final_revs, aes(genotype, rev_prob, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=rev_prob-genotype_sds$rev_prob, ymax=rev_prob+genotype_sds$rev_prob), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, rev_prob, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_rev_finalprob_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
 ggplot(mean_final_revs, aes(genotype, rev_dur, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=rev_dur-genotype_sds$rev_dur, ymax=rev_dur+genotype_sds$rev_dur), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, rev_dur, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_rev_finaldur_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
 ggplot(mean_final_revs, aes(genotype, rev_speed, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=rev_speed-genotype_sds$rev_speed, ymax=rev_speed+genotype_sds$rev_speed), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, rev_speed, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_rev_finalspeed_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
 ggplot(mean_final_revs, aes(genotype, rev_dist, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=rev_dist-genotype_sds$rev_dist, ymax=rev_dist+genotype_sds$rev_dist), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, rev_dist, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_rev_finaldist_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
 
 
 
@@ -986,6 +1112,12 @@ mean_spont_revs <- Spont_revs %>%
   group_by(genotype, plate_id) %>%
   summarize_all(mean) 
 
+genotype_means <- mean_spont_revs %>% 
+  summarise_all(mean) 
+
+genotype_sds <- mean_spont_revs %>% 
+  summarise_all(sd) 
+
 
 pairwise.t.test(x = mean_spont_revs$rev_prob, g = mean_spont_revs$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_spont_revs$rev_dur, g = mean_spont_revs$genotype, p.adjust.method = "BH")
@@ -994,13 +1126,80 @@ pairwise.t.test(x = mean_spont_revs$rev_speed, g = mean_spont_revs$genotype, p.a
 
 
 ggplot(mean_spont_revs, aes(genotype, rev_prob, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=rev_prob-genotype_sds$rev_prob, ymax=rev_prob+genotype_sds$rev_prob), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, rev_prob, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_rev_spontprob_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
 ggplot(mean_spont_revs, aes(genotype, rev_dur, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=rev_dur-genotype_sds$rev_dur, ymax=rev_dur+genotype_sds$rev_dur), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, rev_dur, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_rev_spontdur_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
 ggplot(mean_spont_revs, aes(genotype, rev_speed, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=rev_speed-genotype_sds$rev_speed, ymax=rev_speed+genotype_sds$rev_speed), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, rev_speed, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_rev_spontspeed_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
 ggplot(mean_spont_revs, aes(genotype, rev_dist, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=rev_dist-genotype_sds$rev_dist, ymax=rev_dist+genotype_sds$rev_dist), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, rev_dist, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_rev_spontdist_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
 
 
 all_revs <- cleanrawsrev %>%
@@ -1010,20 +1209,92 @@ mean_all_revs <- all_revs %>%
   group_by(genotype, plate_id) %>%
   summarize_all(mean) 
 
+genotype_means <- mean_all_revs %>% 
+  summarise_all(mean) 
+
+genotype_sds <- mean_all_revs %>% 
+  summarise_all(sd) 
+
 pairwise.t.test(x = mean_all_revs$rev_prob, g = mean_all_revs$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_all_revs$rev_speed, g = mean_all_revs$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_all_revs$rev_dur, g = mean_all_revs$genotype, p.adjust.method = "BH")
 pairwise.t.test(x = mean_all_revs$rev_dist, g = mean_all_revs$genotype, p.adjust.method = "BH")
 
 ggplot(mean_all_revs, aes(genotype, rev_prob, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
-ggplot(mean_all_revs, aes(genotype, rev_dur, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
-ggplot(mean_all_revs, aes(genotype, rev_speed, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
-ggplot(mean_all_revs, aes(genotype, rev_dist, colour = genotype)) +
-  geom_jitter(size = 1, width = 0.25)
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=rev_prob-genotype_sds$rev_prob, ymax=rev_prob+genotype_sds$rev_prob), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, rev_prob, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_rev_allprob_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
 
+ggplot(mean_all_revs, aes(genotype, rev_dur, colour = genotype)) +
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=rev_dur-genotype_sds$rev_dur, ymax=rev_dur+genotype_sds$rev_dur), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, rev_dur, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_rev_alldur_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
+ggplot(mean_all_revs, aes(genotype, rev_speed, colour = genotype)) +
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=rev_speed-genotype_sds$rev_speed, ymax=rev_speed+genotype_sds$rev_speed), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, rev_speed, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_rev_allspeed_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
+
+ggplot(mean_all_revs, aes(genotype, rev_dist, colour = genotype)) +
+  geom_jitter(size = 2.5, width = 0.25) +
+  geom_errorbar(data = genotype_means, aes(ymin=rev_dist-genotype_sds$rev_dist, ymax=rev_dist+genotype_sds$rev_dist), width = 0, size = 0.6, colour = "black") +
+  geom_point(data =  genotype_means, aes(genotype, rev_dist, fill = genotype), colour = "black", shape = 21, size = 3, stroke = 0.8) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  theme_classic() +
+  labs(y = "", x = "") +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(family="Arial", colour = "black", size = 0)) +
+  theme(axis.line = element_line(colour = 'black', size = 0.9)) +
+  theme(axis.text.y = element_text(family="Arial", colour = "black", size = 12)) +
+  theme(axis.ticks.y = element_line(colour = "black", size = 0.9)) +
+  theme(axis.ticks.length=unit(.05, "in")) +
+  theme(axis.ticks.x = element_line(colour = "black", size = 0)) +
+ggsave("unc3_L4_rev_alldist_mini_dot_mean.jpeg", width = 1.6, height = 1.8, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
 
 
 ```
@@ -1783,6 +2054,9 @@ ggsave("unc3_rev_angular_trace_l2.jpeg", width = 3, height = 2.5, path = "/Users
 
 ##Code to remove all 0 measurement entries and focus on the baseline period (300-599 seconds) which occurs after the worms have acclimated to the tracker but prior to the delivery of mechanosensory stimuli 
 
+cleanrawsmorph$genotype <- factor(cleanrawsmorph$genotype,
+    levels = c('OH13988N', 'OH13988C', 'OH13988A', 'OH13988D', ordered = TRUE))
+
 cleanrawsmorph_baseline <- cleanrawsmorph %>% 
   filter(between(cleanrawsmorph$time, 300, 599))
 
@@ -1810,8 +2084,8 @@ ggplot(mean_cleanrawsmorph, aes(genotype, length, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25) +
   geom_errorbar(data = genotype_means, aes(ymin=length-genotype_sds$length, ymax=length+genotype_sds$length), width = 0, size = 0.4, colour = "black") +
   geom_point(data =  genotype_means, aes(genotype, length, fill = genotype), colour = "black", shape = 21) +
-  scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-  scale_fill_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
   scale_y_continuous(expand = c(0,0),
                      limits = c(0.5,1.25), breaks = c(0.5,0.75,1.0,1.25)) +
   theme_classic() +
@@ -1828,18 +2102,6 @@ ggplot(mean_cleanrawsmorph, aes(genotype, length, colour = genotype)) +
   theme(axis.title = element_text(family="Arial", colour = "black", size = 11)) +
 ggsave("unc3_L2_length_dot_mean.jpeg", width = 2.1, height = 2.3, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
 
-##Fit a linear model and estimate signficance of group differences with adjusted p-values. 
-
-fit <- summary(lm(kink~genotype, mean_cleanrawsmorph))
-
-tidy_fit <- tidy(fit)  
-
-qvals <- p.adjust(tidy_fit$p.value, "BH")
-
-tidy_fit$q.vals <- qvals
-
-pairwise.t.test(x = mean_cleanrawsmorph$length, g = mean_cleanrawsmorph$genotype, p.adjust.method = "bonf")
-
 
 ##Plotting kink
 
@@ -1847,8 +2109,8 @@ ggplot(mean_cleanrawsmorph, aes(genotype, kink, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25) +
   geom_errorbar(data = genotype_means, aes(ymin=kink-genotype_sds$kink, ymax=kink+genotype_sds$kink), width = 0, size = 0.5, colour = "black") +
   geom_point(data =  genotype_means, aes(genotype, kink, fill = genotype), colour = "black", shape = 21) +
-  scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-  scale_fill_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
   scale_y_continuous(expand = c(0,0),
                      limits = c(25,100), breaks = c(25,50,75,100)) +
   theme_classic() +
@@ -1865,18 +2127,6 @@ ggplot(mean_cleanrawsmorph, aes(genotype, kink, colour = genotype)) +
   theme(axis.title = element_text(family="Arial", colour = "black", size = 11)) +
 ggsave("unc3_L2_kink_dot_mean.jpeg", width = 2.1, height = 2.3, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
 
-
-##Fit a linear model and estimate signficance of group differences with adjusted p-values. 
-
-fit <- summary(lm(kink~genotype, mean_cleanrawsmorph))
-
-tidy_fit <- tidy(fit)  
-
-qvals <- p.adjust(tidy_fit$p.value, "BH")
-
-tidy_fit$q.vals <- qvals
-
-pairwise.t.test(x = mean_cleanrawsmorph$kink, g = mean_cleanrawsmorph$genotype, p.adjust.method = "bonf")
 
 ```
 
@@ -2789,6 +3039,9 @@ ggsave("unc3_rev_angular_trace_3d.jpeg", width = 3, height = 2.5, path = "/Users
 
 ##Code to remove all 0 measurement entries and focus on the baseline period (300-599 seconds) which occurs after the worms have acclimated to the tracker but prior to the delivery of mechanosensory stimuli 
 
+cleanrawsmorph$genotype <- factor(cleanrawsmorph$genotype,
+    levels = c('OH13988N', 'OH13988C', 'OH13988A', 'OH13988D', ordered = TRUE))
+
 cleanrawsmorph_baseline <- cleanrawsmorph %>% 
   filter(between(cleanrawsmorph$time, 300, 599))
 
@@ -2816,8 +3069,8 @@ ggplot(mean_cleanrawsmorph, aes(genotype, length, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25) +
   geom_errorbar(data = genotype_means, aes(ymin=length-genotype_sds$length, ymax=length+genotype_sds$length), width = 0, size = 0.4, colour = "black") +
   geom_point(data =  genotype_means, aes(genotype, length, fill = genotype), colour = "black", shape = 21) +
-  scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-  scale_fill_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
   scale_y_continuous(expand = c(0,0),
                      limits = c(0.5,1.25), breaks = c(0.5,0.75,1.0,1.25)) +
   theme_classic() +
@@ -2834,18 +3087,6 @@ ggplot(mean_cleanrawsmorph, aes(genotype, length, colour = genotype)) +
   theme(axis.title = element_text(family="Arial", colour = "black", size = 11)) +
 ggsave("unc3_3d_length_dot_mean.jpeg", width = 2.1, height = 2.3, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
 
-##Fit a linear model and estimate signficance of group differences with adjusted p-values. 
-
-fit <- summary(lm(kink~genotype, mean_cleanrawsmorph))
-
-tidy_fit <- tidy(fit)  
-
-qvals <- p.adjust(tidy_fit$p.value, "BH")
-
-tidy_fit$q.vals <- qvals
-
-pairwise.t.test(x = mean_cleanrawsmorph$length, g = mean_cleanrawsmorph$genotype, p.adjust.method = "bonf")
-
 
 ##Plotting kink
 
@@ -2853,8 +3094,8 @@ ggplot(mean_cleanrawsmorph, aes(genotype, kink, colour = genotype)) +
   geom_jitter(size = 1, width = 0.25) +
   geom_errorbar(data = genotype_means, aes(ymin=kink-genotype_sds$kink, ymax=kink+genotype_sds$kink), width = 0, size = 0.5, colour = "black") +
   geom_point(data =  genotype_means, aes(genotype, kink, fill = genotype), colour = "black", shape = 21) +
-  scale_colour_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
-  scale_fill_manual(values = c("black", "dodgerblue2", "gray39", "#EDBD44")) +
+  scale_colour_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
+  scale_fill_manual(values = c("black", "dodgerblue2", "#EDBD44", "gray39")) +
   scale_y_continuous(expand = c(0,0),
                      limits = c(25,100), breaks = c(25,50,75,100)) +
   theme_classic() +
@@ -2872,17 +3113,6 @@ ggplot(mean_cleanrawsmorph, aes(genotype, kink, colour = genotype)) +
 ggsave("unc3_3d_kink_dot_mean.jpeg", width = 2.1, height = 2.3, path = "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc3/Fig_S1_graphs")
 
 
-##Fit a linear model and estimate signficance of group differences with adjusted p-values. 
-
-fit <- summary(lm(kink~genotype, mean_cleanrawsmorph))
-
-tidy_fit <- tidy(fit)  
-
-qvals <- p.adjust(tidy_fit$p.value, "BH")
-
-tidy_fit$q.vals <- qvals
-
-pairwise.t.test(x = mean_cleanrawsmorph$kink, g = mean_cleanrawsmorph$genotype, p.adjust.method = "bonf")
 
 ```
 
