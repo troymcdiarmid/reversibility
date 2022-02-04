@@ -12,6 +12,12 @@ library(tidyverse)
 library(scales)
 library(broom)
 
+library(devtools)
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+library("ComplexHeatmap")
+library(circlize)
+
 ```
 
 
@@ -4514,5 +4520,6 @@ ggplot(mean_all_revs, aes(genotype, rev_dist, colour = genotype)) +
 
 
 ```
+
 
 
