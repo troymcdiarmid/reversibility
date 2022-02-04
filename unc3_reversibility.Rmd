@@ -1498,9 +1498,295 @@ curve_tstat_DF <- tidy(lmfit) %>%
 curve_results <- curve_tstat_DF %>% 
   left_join(curve_pwt, by = "genotype")
 
-##Then joing them all together into one big results dataframe
 
-pwt_results <- rbind(length_results, width_results, midline_results, morphwidth_results, area_results, pathlen_results, bias_results, dir_results, angular_results, aspect_results, kink_results, crab_results, speed_results, curve_results)
+##Now ungrouping the initial revs
+
+UG_mean_initial_revs <- ungroup(mean_initial_revs)
+
+##Then calculating those four statistics 
+
+init_rev_prob_pwt <- UG_mean_initial_revs  %>% 
+  pairwise_t_test(rev_prob ~ genotype, p.adjust.method = "BH") %>% 
+  filter(group1 == "OH13988N") %>% 
+  rename(phenotype = .y., genotype = group2, control_group = group1) 
+lmfit <- lm(rev_prob ~ genotype,
+   data = UG_mean_initial_revs) 
+init_rev_prob_tstat_DF <- tidy(lmfit) %>% 
+  filter(!term == "(Intercept)") %>% 
+  separate(term, into = c("garbage", "genotype"), sep = 8) %>% 
+  select(genotype:statistic)
+init_rev_prob_results <- init_rev_dur_tstat_DF %>% 
+  left_join(init_rev_prob_pwt, by = "genotype")
+
+init_rev_dur_pwt <- UG_mean_initial_revs  %>% 
+  pairwise_t_test(rev_dur ~ genotype, p.adjust.method = "BH") %>% 
+  filter(group1 == "OH13988N") %>% 
+  rename(phenotype = .y., genotype = group2, control_group = group1) 
+lmfit <- lm(rev_dur ~ genotype,
+   data = UG_mean_initial_revs) 
+init_rev_dur_tstat_DF <- tidy(lmfit) %>% 
+  filter(!term == "(Intercept)") %>% 
+  separate(term, into = c("garbage", "genotype"), sep = 8) %>% 
+  select(genotype:statistic)
+init_rev_dur_results <- init_rev_prob_tstat_DF %>% 
+  left_join(init_rev_dur_pwt, by = "genotype")
+
+init_rev_speed_pwt <- UG_mean_initial_revs  %>% 
+  pairwise_t_test(rev_speed ~ genotype, p.adjust.method = "BH") %>% 
+  filter(group1 == "OH13988N") %>% 
+  rename(phenotype = .y., genotype = group2, control_group = group1) 
+lmfit <- lm(rev_speed ~ genotype,
+   data = UG_mean_initial_revs) 
+init_rev_speed_tstat_DF <- tidy(lmfit) %>% 
+  filter(!term == "(Intercept)") %>% 
+  separate(term, into = c("garbage", "genotype"), sep = 8) %>% 
+  select(genotype:statistic)
+init_rev_speed_results <- init_rev_speed_tstat_DF %>% 
+  left_join(init_rev_speed_pwt, by = "genotype")
+
+
+init_rev_dist_pwt <- UG_mean_initial_revs  %>% 
+  pairwise_t_test(rev_dist ~ genotype, p.adjust.method = "BH") %>% 
+  filter(group1 == "OH13988N") %>% 
+  rename(phenotype = .y., genotype = group2, control_group = group1) 
+lmfit <- lm(rev_dist ~ genotype,
+   data = UG_mean_initial_revs) 
+init_rev_dist_tstat_DF <- tidy(lmfit) %>% 
+  filter(!term == "(Intercept)") %>% 
+  separate(term, into = c("garbage", "genotype"), sep = 8) %>% 
+  select(genotype:statistic)
+init_rev_dist_results <- init_rev_dist_tstat_DF %>% 
+  left_join(init_rev_dist_pwt, by = "genotype")
+
+init_rev_results <- rbind(init_rev_prob_results, init_rev_dur_results, init_rev_speed_results, init_rev_dist_results) 
+
+init_rev_results$phenotype[which(init_rev_results$phenotype == "rev_prob")] <- "init_rev_prob"
+init_rev_results$phenotype[which(init_rev_results$phenotype == "rev_dur")] <- "init_rev_dur"
+init_rev_results$phenotype[which(init_rev_results$phenotype == "rev_speed")] <- "init_rev_speed"
+init_rev_results$phenotype[which(init_rev_results$phenotype == "rev_dist")] <- "init_rev_dist"
+
+
+##Then caclulating hab level
+
+UG_mean_final_revs <- ungroup(mean_final_revs)
+
+final_rev_prob_pwt <- UG_mean_final_revs  %>% 
+  pairwise_t_test(rev_prob ~ genotype, p.adjust.method = "BH") %>% 
+  filter(group1 == "OH13988N") %>% 
+  rename(phenotype = .y., genotype = group2, control_group = group1) 
+lmfit <- lm(rev_prob ~ genotype,
+   data = UG_mean_final_revs) 
+final_rev_prob_tstat_DF <- tidy(lmfit) %>% 
+  filter(!term == "(Intercept)") %>% 
+  separate(term, into = c("garbage", "genotype"), sep = 8) %>% 
+  select(genotype:statistic)
+final_rev_prob_results <- final_rev_prob_tstat_DF %>% 
+  left_join(final_rev_prob_pwt, by = "genotype")
+
+final_rev_dur_pwt <- UG_mean_final_revs  %>% 
+  pairwise_t_test(rev_dur ~ genotype, p.adjust.method = "BH") %>% 
+  filter(group1 == "OH13988N") %>% 
+  rename(phenotype = .y., genotype = group2, control_group = group1) 
+lmfit <- lm(rev_dur ~ genotype,
+   data = UG_mean_final_revs) 
+final_rev_dur_tstat_DF <- tidy(lmfit) %>% 
+  filter(!term == "(Intercept)") %>% 
+  separate(term, into = c("garbage", "genotype"), sep = 8) %>% 
+  select(genotype:statistic)
+final_rev_dur_results <- final_rev_dur_tstat_DF %>% 
+  left_join(final_rev_dur_pwt, by = "genotype")
+
+final_rev_speed_pwt <- UG_mean_final_revs  %>% 
+  pairwise_t_test(rev_speed ~ genotype, p.adjust.method = "BH") %>% 
+  filter(group1 == "OH13988N") %>% 
+  rename(phenotype = .y., genotype = group2, control_group = group1) 
+lmfit <- lm(rev_speed ~ genotype,
+   data = UG_mean_final_revs) 
+final_rev_speed_tstat_DF <- tidy(lmfit) %>% 
+  filter(!term == "(Intercept)") %>% 
+  separate(term, into = c("garbage", "genotype"), sep = 8) %>% 
+  select(genotype:statistic)
+final_rev_speed_results <- final_rev_speed_tstat_DF %>% 
+  left_join(final_rev_speed_pwt, by = "genotype")
+
+
+final_rev_dist_pwt <- UG_mean_final_revs  %>% 
+  pairwise_t_test(rev_dist ~ genotype, p.adjust.method = "BH") %>% 
+  filter(group1 == "OH13988N") %>% 
+  rename(phenotype = .y., genotype = group2, control_group = group1) 
+lmfit <- lm(rev_dist ~ genotype,
+   data = UG_mean_final_revs) 
+final_rev_dist_tstat_DF <- tidy(lmfit) %>% 
+  filter(!term == "(Intercept)") %>% 
+  separate(term, into = c("garbage", "genotype"), sep = 8) %>% 
+  select(genotype:statistic)
+final_rev_dist_results <- final_rev_dist_tstat_DF %>% 
+  left_join(final_rev_dist_pwt, by = "genotype")
+
+final_rev_results <- rbind(final_rev_prob_results, final_rev_dur_results, final_rev_speed_results, final_rev_dist_results) 
+
+final_rev_results$phenotype[which(final_rev_results$phenotype == "rev_prob")] <- "final_rev_prob"
+final_rev_results$phenotype[which(final_rev_results$phenotype == "rev_dur")] <- "final_rev_dur"
+final_rev_results$phenotype[which(final_rev_results$phenotype == "rev_speed")] <- "final_rev_speed"
+final_rev_results$phenotype[which(final_rev_results$phenotype == "rev_dist")] <- "final_rev_dist"
+
+##Then caclulating spont revs
+
+UG_mean_spont_revs <- ungroup(mean_spont_revs)
+
+spont_rev_prob_pwt <- UG_mean_spont_revs  %>% 
+  pairwise_t_test(rev_prob ~ genotype, p.adjust.method = "BH") %>% 
+  filter(group1 == "OH13988N") %>% 
+  rename(phenotype = .y., genotype = group2, control_group = group1) 
+lmfit <- lm(rev_prob ~ genotype,
+   data = UG_mean_spont_revs) 
+spont_rev_prob_tstat_DF <- tidy(lmfit) %>% 
+  filter(!term == "(Intercept)") %>% 
+  separate(term, into = c("garbage", "genotype"), sep = 8) %>% 
+  select(genotype:statistic)
+spont_rev_prob_results <- spont_rev_prob_tstat_DF %>% 
+  left_join(spont_rev_prob_pwt, by = "genotype")
+
+spont_rev_dur_pwt <- UG_mean_spont_revs  %>% 
+  pairwise_t_test(rev_dur ~ genotype, p.adjust.method = "BH") %>% 
+  filter(group1 == "OH13988N") %>% 
+  rename(phenotype = .y., genotype = group2, control_group = group1) 
+lmfit <- lm(rev_dur ~ genotype,
+   data = UG_mean_spont_revs) 
+spont_rev_dur_tstat_DF <- tidy(lmfit) %>% 
+  filter(!term == "(Intercept)") %>% 
+  separate(term, into = c("garbage", "genotype"), sep = 8) %>% 
+  select(genotype:statistic)
+spont_rev_dur_results <- spont_rev_dur_tstat_DF %>% 
+  left_join(spont_rev_dur_pwt, by = "genotype")
+
+spont_rev_speed_pwt <- UG_mean_spont_revs  %>% 
+  pairwise_t_test(rev_speed ~ genotype, p.adjust.method = "BH") %>% 
+  filter(group1 == "OH13988N") %>% 
+  rename(phenotype = .y., genotype = group2, control_group = group1) 
+lmfit <- lm(rev_speed ~ genotype,
+   data = UG_mean_spont_revs) 
+spont_rev_speed_tstat_DF <- tidy(lmfit) %>% 
+  filter(!term == "(Intercept)") %>% 
+  separate(term, into = c("garbage", "genotype"), sep = 8) %>% 
+  select(genotype:statistic)
+spont_rev_speed_results <- spont_rev_speed_tstat_DF %>% 
+  left_join(spont_rev_speed_pwt, by = "genotype")
+
+
+spont_rev_dist_pwt <- UG_mean_spont_revs  %>% 
+  pairwise_t_test(rev_dist ~ genotype, p.adjust.method = "BH") %>% 
+  filter(group1 == "OH13988N") %>% 
+  rename(phenotype = .y., genotype = group2, control_group = group1) 
+lmfit <- lm(rev_dist ~ genotype,
+   data = UG_mean_spont_revs) 
+spont_rev_dist_tstat_DF <- tidy(lmfit) %>% 
+  filter(!term == "(Intercept)") %>% 
+  separate(term, into = c("garbage", "genotype"), sep = 8) %>% 
+  select(genotype:statistic)
+spont_rev_dist_results <- spont_rev_dist_tstat_DF %>% 
+  left_join(spont_rev_dist_pwt, by = "genotype")
+
+spont_rev_results <- rbind(spont_rev_prob_results, spont_rev_dur_results, spont_rev_speed_results, spont_rev_dist_results) 
+
+spont_rev_results$phenotype[which(spont_rev_results$phenotype == "rev_prob")] <- "spont_rev_prob"
+spont_rev_results$phenotype[which(spont_rev_results$phenotype == "rev_dur")] <- "spont_rev_dur"
+spont_rev_results$phenotype[which(spont_rev_results$phenotype == "rev_speed")] <- "spont_rev_speed"
+spont_rev_results$phenotype[which(spont_rev_results$phenotype == "rev_dist")] <- "spont_rev_dist"
+
+
+##Then caclulating all revs
+
+UG_mean_all_revs <- ungroup(mean_all_revs)
+
+all_rev_prob_pwt <- UG_mean_all_revs  %>% 
+  pairwise_t_test(rev_prob ~ genotype, p.adjust.method = "BH") %>% 
+  filter(group1 == "OH13988N") %>% 
+  rename(phenotype = .y., genotype = group2, control_group = group1) 
+lmfit <- lm(rev_prob ~ genotype,
+   data = UG_mean_all_revs) 
+all_rev_prob_tstat_DF <- tidy(lmfit) %>% 
+  filter(!term == "(Intercept)") %>% 
+  separate(term, into = c("garbage", "genotype"), sep = 8) %>% 
+  select(genotype:statistic)
+all_rev_prob_results <- all_rev_prob_tstat_DF %>% 
+  left_join(all_rev_prob_pwt, by = "genotype")
+
+all_rev_dur_pwt <- UG_mean_all_revs  %>% 
+  pairwise_t_test(rev_dur ~ genotype, p.adjust.method = "BH") %>% 
+  filter(group1 == "OH13988N") %>% 
+  rename(phenotype = .y., genotype = group2, control_group = group1) 
+lmfit <- lm(rev_dur ~ genotype,
+   data = UG_mean_all_revs) 
+all_rev_dur_tstat_DF <- tidy(lmfit) %>% 
+  filter(!term == "(Intercept)") %>% 
+  separate(term, into = c("garbage", "genotype"), sep = 8) %>% 
+  select(genotype:statistic)
+all_rev_dur_results <- all_rev_dur_tstat_DF %>% 
+  left_join(all_rev_dur_pwt, by = "genotype")
+
+all_rev_speed_pwt <- UG_mean_all_revs  %>% 
+  pairwise_t_test(rev_speed ~ genotype, p.adjust.method = "BH") %>% 
+  filter(group1 == "OH13988N") %>% 
+  rename(phenotype = .y., genotype = group2, control_group = group1) 
+lmfit <- lm(rev_speed ~ genotype,
+   data = UG_mean_all_revs) 
+all_rev_speed_tstat_DF <- tidy(lmfit) %>% 
+  filter(!term == "(Intercept)") %>% 
+  separate(term, into = c("garbage", "genotype"), sep = 8) %>% 
+  select(genotype:statistic)
+all_rev_speed_results <- all_rev_speed_tstat_DF %>% 
+  left_join(all_rev_speed_pwt, by = "genotype")
+
+
+all_rev_dist_pwt <- UG_mean_all_revs  %>% 
+  pairwise_t_test(rev_dist ~ genotype, p.adjust.method = "BH") %>% 
+  filter(group1 == "OH13988N") %>% 
+  rename(phenotype = .y., genotype = group2, control_group = group1) 
+lmfit <- lm(rev_dist ~ genotype,
+   data = UG_mean_all_revs) 
+all_rev_dist_tstat_DF <- tidy(lmfit) %>% 
+  filter(!term == "(Intercept)") %>% 
+  separate(term, into = c("garbage", "genotype"), sep = 8) %>% 
+  select(genotype:statistic)
+all_rev_dist_results <- all_rev_dist_tstat_DF %>% 
+  left_join(all_rev_dist_pwt, by = "genotype")
+
+all_rev_results <- rbind(all_rev_prob_results, all_rev_dur_results, all_rev_speed_results, all_rev_dist_results) 
+
+all_rev_results$phenotype[which(all_rev_results$phenotype == "rev_prob")] <- "all_rev_prob"
+all_rev_results$phenotype[which(all_rev_results$phenotype == "rev_dur")] <- "all_rev_dur"
+all_rev_results$phenotype[which(all_rev_results$phenotype == "rev_speed")] <- "all_rev_speed"
+all_rev_results$phenotype[which(all_rev_results$phenotype == "rev_dist")] <- "all_rev_dist"
+
+##Combining everything together
+
+unc3_l4_results <- rbind(length_results, width_results, midline_results, morphwidth_results, area_results, pathlen_results, bias_results, dir_results, angular_results, aspect_results, kink_results, crab_results, speed_results, curve_results, init_rev_results, final_rev_results, spont_rev_results, all_rev_results) %>% rename(condition = genotype, t_statistic = statistic, control_n = n1, treatment_condition_n = n2)
+
+
+##creating a filtered and transposed version for heatmapping
+
+unc3_l4_results_mat <- unc3_l4_results %>% 
+  select(condition, phenotype, t_statistic) %>% 
+  pivot_wider(names_from = phenotype, values_from = t_statistic) %>% 
+  as.matrix(unc3_l4_results_mat)
+
+unc3_l4_results_mat2 <- unc3_l4_results_mat[,2:31]
+
+colnames_mat <- unc3_l4_results_mat[,2:31]
+
+
+unc3_l4_results_mat2 <- matrix(as.numeric(unc3_l4_results_mat2), ncol = ncol(unc3_l4_results_mat2))
+
+colnames(unc3_l4_results_mat2) <- colnames(colnames_mat)
+rownames(unc3_l4_results_mat2) <- unc3_l4_results_mat[,1]
+
+  
+##Making the heatmap
+
+col_fun = colorRamp2(c(-10, 0, 10), c("dodgerblue", "black", "yellow"))
+
+Heatmap(unc3_l4_results_mat2, col = col_fun, rect_gp = gpar(col = "white", lwd = 4), cluster_rows = FALSE, cluster_columns = FALSE, height = nrow(mat)*unit(0.5, "mm"))
 
 
 ```
