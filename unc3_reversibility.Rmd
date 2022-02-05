@@ -1761,10 +1761,16 @@ all_rev_results$phenotype[which(all_rev_results$phenotype == "rev_dist")] <- "al
 
 ##Combining everything together
 
-unc3_l4_results <- rbind(length_results, width_results, midline_results, morphwidth_results, area_results, pathlen_results, bias_results, dir_results, angular_results, aspect_results, kink_results, crab_results, speed_results, curve_results, init_rev_results, final_rev_results, spont_rev_results, all_rev_results) %>% rename(condition = genotype, t_statistic = statistic, control_n = n1, treatment_condition_n = n2)
+unc3_l4_results <- rbind(length_results, width_results, midline_results, morphwidth_results, area_results, pathlen_results, bias_results, dir_results, angular_results, aspect_results, kink_results, crab_results, speed_results, curve_results, init_rev_results, final_rev_results, spont_rev_results, all_rev_results) %>% rename(condition = genotype, t_statistic = statistic, control_n = n1, treatment_condition_n = n2) %>% 
+  mutate(p_f = p.adj)
 
+unc3_l4_results$p_f[unc3_l4_results$p_f > 0.01] <- 0
+unc3_l4_results$p_f[unc3_l4_results$p_f > 0] <- 1
 
-##creating a filtered and transposed version for heatmapping
+unc3_l4_results <- unc3_l4_results %>% 
+  mutate(plot_tstat = t_statistic*p_f)
+
+##creating a transposed version for heatmapping
 
 unc3_l4_results_mat <- unc3_l4_results %>% 
   select(condition, phenotype, t_statistic) %>% 
@@ -1781,12 +1787,64 @@ unc3_l4_results_mat2 <- matrix(as.numeric(unc3_l4_results_mat2), ncol = ncol(unc
 colnames(unc3_l4_results_mat2) <- colnames(colnames_mat)
 rownames(unc3_l4_results_mat2) <- unc3_l4_results_mat[,1]
 
+##plotting
+
+col_fun = colorRamp2(c(-20, 0, 20), c("dodgerblue", "black", "yellow"))
+
+Heatmap(unc3_l4_results_mat2, col = col_fun, rect_gp = gpar(col = "white", lwd = 4), cluster_rows = FALSE, cluster_columns = FALSE, height = nrow(mat)*unit(0.5, "mm"))
+
+##Calculate degree of rescue 
+
+abs_continous_effect_mat <- abs(unc3_l4_results_mat2)
+abs_continous_effect_mat <- t(abs_continous_effect_mat[1,])
+abs_rescue_level_mat <- abs(unc3_l4_results_mat2)
+abs_rescue_level_mat <- t(abs_rescue_level_mat[3,])
+
+rescue_amount_mat <- abs_continous_effect_mat-abs_rescue_level_mat
+rescue_amount_mat[rescue_amount_mat < 0] <- 0
+
+col_fun = colorRamp2(c(0, 5), c("white", "#86A790"))
+
+Heatmap(rescue_amount_mat, col = col_fun, rect_gp = gpar(col = "white", lwd = 4), cluster_rows = FALSE, cluster_columns = FALSE, height = nrow(mat)*unit(0.25, "mm"))
+
+##Capping t-statistics 
+
+unc3_l4_results_mat2[unc3_l4_results_mat2 < -5] <- -5
+unc3_l4_results_mat2[unc3_l4_results_mat2 > 5] <- 5
   
 ##Making the heatmap
+
+col_fun = colorRamp2(c(-5, 0, 5), c("dodgerblue", "black", "yellow"))
+
+Heatmap(unc3_l4_results_mat2, col = col_fun, rect_gp = gpar(col = "white", lwd = 4), cluster_rows = FALSE, cluster_columns = FALSE, height = nrow(mat)*unit(0.5, "mm"))
+
+
+##Plotting only significant values 
+
+unc3_l4_results_mat <- unc3_l4_results %>% 
+  select(condition, phenotype, plot_tstat) %>% 
+  pivot_wider(names_from = phenotype, values_from = plot_tstat) %>% 
+  as.matrix(unc3_l4_results_mat)
+
+unc3_l4_results_mat2 <- unc3_l4_results_mat[,2:31]
+
+colnames_mat <- unc3_l4_results_mat[,2:31]
+
+
+unc3_l4_results_mat2 <- matrix(as.numeric(unc3_l4_results_mat2), ncol = ncol(unc3_l4_results_mat2))
+
+colnames(unc3_l4_results_mat2) <- colnames(colnames_mat)
+rownames(unc3_l4_results_mat2) <- unc3_l4_results_mat[,1]
+
+##Making the heatmap
+
+unc3_l4_results_mat2[unc3_l4_results_mat2 < -10] <- -10
+unc3_l4_results_mat2[unc3_l4_results_mat2 > 10] <- 10
 
 col_fun = colorRamp2(c(-10, 0, 10), c("dodgerblue", "black", "yellow"))
 
 Heatmap(unc3_l4_results_mat2, col = col_fun, rect_gp = gpar(col = "white", lwd = 4), cluster_rows = FALSE, cluster_columns = FALSE, height = nrow(mat)*unit(0.5, "mm"))
+
 
 
 ```
