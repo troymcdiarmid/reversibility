@@ -2829,7 +2829,7 @@ results <- results %>%
 unc86_L4_results <- results %>% 
   select(!"p.adj.signif")
 
-write_csv(unc86_L4_results, "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc86/run2/unc86_l4_results.csv")
+write_csv(unc86_L4_results, "/Users/troymcdiarmid/Documents/Reversibility_materials/Figures/unc86/1d_rev_run2/unc86_l2_results.csv")
 
 ##creating a transposed version for heatmapping
 
