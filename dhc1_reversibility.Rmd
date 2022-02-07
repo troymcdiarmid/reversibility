@@ -953,7 +953,7 @@ init_rev_results$phenotype[which(init_rev_results$phenotype == "rev_speed")] <- 
 init_rev_results$phenotype[which(init_rev_results$phenotype == "rev_dist")] <- "init_rev_dist"
 
 
-##Then caclulating hab level
+##Then caclulating habituation level
 
 UG_mean_final_revs <- ungroup(mean_final_revs)
 
