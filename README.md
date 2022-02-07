@@ -31,7 +31,7 @@ Please see the pre-print for more information about the project.
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Make sure that you have R installed with the requirements listed below. Raw and processed data can be obtained from the Dataverse link mentioned above.
+Make sure that you have R installed with the requirements listed below. Raw and processed data can be obtained from the Dataverse link mentioned above or from the authors upon request.
 
 ### Prerequisites
 The code was executed using the following R version and platform:
