@@ -47,7 +47,7 @@ The R packages required for this project are listed at the beginning of each mar
 Please report any missing dependencies/requirements by [opening an issue](https://github.com/troymcdiarmid/peel-1/issues) on this repository.
 
 ### Data
-Raw or preprocessed data can be obtained from our lab dataverse.
+Raw or preprocessed data can be obtained from our lab dataverse or from the authors upon request.
 
 
 <!-- LICENSE -->
