@@ -4798,6 +4798,8 @@ results_mat <- results %>%
   pivot_wider(names_from = phenotype, values_from = plot_sig_tstat) %>% 
   as.matrix()
 
+##Modifying to only call rescues seen on 2 or more runs
+
 results_mat <- results_mat[c(1,3,2),]
 results_mat[1,6] <- 0
 results_mat[3,7] <- 0 
