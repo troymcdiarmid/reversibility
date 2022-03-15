@@ -2756,7 +2756,7 @@ ggplot(mean_all_revs, aes(genotype, rev_dist, colour = genotype)) +
 
 
 
-##Analysis for L4 pan neuronal inactivation and rescue at 0.025mM sept29 2021 run 3
+##Additional analysis for L4 pan neuronal inactivation and rescue at 0.025mM 
 
 
 
@@ -4967,7 +4967,7 @@ ggplot(mean_all_revs, aes(genotype, rev_dist, colour = genotype)) +
 
 
 
-##Analysis for 1D pan neuronal inactivation and rescue at 0.025mM Run 2 
+##Analysis for L2 pan neuronal inactivation and rescue at 0.025mM  
 
 
 
