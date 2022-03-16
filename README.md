@@ -19,7 +19,7 @@ Analysis code for "Rapid Assessment of the Temporal Function and Phenotypic Reve
 ## About The Project
 
 * Preprint (BioRxiv): [https://doi.org/10.1101/2021.10.21.465355](https://doi.org/10.1101/2021.10.21.465355)
-* Data repository (Dataverse): pending (2022/02/07)
+* Data repository (Dataverse): https://doi.org/10.5683/SP3/NOZWXZ
 * Analysis source code repository (Github): [https://github.com/troymcdiarmid/reversibility/](https://github.com/troymcdiarmid/reversibility/)
 
 >SUMMARY:  
